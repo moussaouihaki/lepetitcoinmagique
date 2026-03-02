@@ -1,10 +1,10 @@
 import ProductCard from '@/components/ProductCard';
 import { Product } from '@/store/cart';
+import fs from 'fs';
+import path from 'path';
 
 async function getProducts() {
     try {
-        const fs = require('fs');
-        const path = require('path');
         const p = path.join(process.cwd(), 'data', 'products.json');
         return JSON.parse(fs.readFileSync(p, 'utf8'));
     } catch {
