@@ -68,7 +68,7 @@ export default function AdminOrdersPage() {
             </div>
 
             {/* Filters */}
-            <div className="flex gap-3 mb-6">
+            <div className="flex flex-col md:flex-row gap-3 mb-6">
                 <div className="relative flex-1">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <input type="text" placeholder="Rechercher un client..." value={search} onChange={e => setSearch(e.target.value)}
@@ -85,66 +85,68 @@ export default function AdminOrdersPage() {
             </div>
 
             {/* Table */}
-            <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
-                <table className="w-full">
-                    <thead>
-                        <tr className="border-b border-gray-100 bg-gray-50/50">
-                            <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Client</th>
-                            <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Date</th>
-                            <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Statut</th>
-                            <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Total</th>
-                            <th className="text-right p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-50">
-                        {loading ? (
-                            Array.from({ length: 5 }).map((_, i) => (
-                                <tr key={i}>{Array.from({ length: 5 }).map((_, j) => <td key={j} className="p-5"><div className="h-4 bg-gray-100 rounded animate-pulse" /></td>)}</tr>
-                            ))
-                        ) : filtered.length === 0 ? (
-                            <tr><td colSpan={5} className="p-16 text-center">
-                                <ShoppingBag size={40} className="text-gray-200 mx-auto mb-3" />
-                                <p className="text-gray-400 font-architects">Aucune commande</p>
-                            </td></tr>
-                        ) : (
-                            filtered.map((order) => (
-                                <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
-                                    <td className="p-5">
-                                        <p className="font-architects text-gray-800 text-sm font-medium">{order.customerName || 'Invité'}</p>
-                                        <p className="text-gray-400 text-xs mt-0.5">{order.customerEmail}</p>
-                                    </td>
-                                    <td className="p-5 text-gray-500 font-architects text-sm">
-                                        {order.createdAt?.toDate?.()?.toLocaleDateString('fr-CH', { day: '2-digit', month: 'short', year: 'numeric' }) || '—'}
-                                    </td>
-                                    <td className="p-5">
-                                        <span className={`px-2.5 py-1 rounded-full text-xs font-architects font-medium ${STATUS_COLORS[order.status] || STATUS_COLORS.pending}`}>
-                                            {STATUS_LABELS[order.status] || 'En attente'}
-                                        </span>
-                                    </td>
-                                    <td className="p-5">
-                                        <span className="font-architects font-bold text-[#b38b59] text-sm">{(order.total || 0).toFixed(2)} CHF</span>
-                                    </td>
-                                    <td className="p-5 text-right">
-                                        <div className="flex items-center gap-2 justify-end">
-                                            <Link href={`/admin/orders/${order.id}`}>
-                                                <button className="flex items-center gap-1.5 px-3 py-1.5 bg-[#4a2128]/5 hover:bg-[#4a2128]/10 text-[#4a2128] rounded-lg font-architects text-xs transition-colors">
-                                                    <Eye size={13} /> Voir
-                                                </button>
-                                            </Link>
-                                            <div className="relative inline-block">
-                                                <select value={order.status || 'pending'} onChange={e => updateStatus(order.id, e.target.value)}
-                                                    className="appearance-none bg-gray-50 border border-gray-200 rounded-lg pl-3 pr-8 py-1.5 text-gray-700 text-sm focus:outline-none focus:border-[#b38b59]/60 font-architects cursor-pointer">
-                                                    {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                                                </select>
-                                                <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="w-full min-w-[800px]">
+                        <thead>
+                            <tr className="border-b border-gray-100 bg-gray-50/50">
+                                <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Client</th>
+                                <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Date</th>
+                                <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Statut</th>
+                                <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Total</th>
+                                <th className="text-right p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-50">
+                            {loading ? (
+                                Array.from({ length: 5 }).map((_, i) => (
+                                    <tr key={i}>{Array.from({ length: 5 }).map((_, j) => <td key={j} className="p-5"><div className="h-4 bg-gray-100 rounded animate-pulse" /></td>)}</tr>
+                                ))
+                            ) : filtered.length === 0 ? (
+                                <tr><td colSpan={5} className="p-16 text-center">
+                                    <ShoppingBag size={40} className="text-gray-200 mx-auto mb-3" />
+                                    <p className="text-gray-400 font-architects">Aucune commande</p>
+                                </td></tr>
+                            ) : (
+                                filtered.map((order) => (
+                                    <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
+                                        <td className="p-5">
+                                            <p className="font-architects text-gray-800 text-sm font-medium">{order.customerName || 'Invité'}</p>
+                                            <p className="text-gray-400 text-xs mt-0.5">{order.customerEmail}</p>
+                                        </td>
+                                        <td className="p-5 text-gray-500 font-architects text-sm">
+                                            {order.createdAt?.toDate?.()?.toLocaleDateString('fr-CH', { day: '2-digit', month: 'short', year: 'numeric' }) || '—'}
+                                        </td>
+                                        <td className="p-5">
+                                            <span className={`px-2.5 py-1 rounded-full text-xs font-architects font-medium ${STATUS_COLORS[order.status] || STATUS_COLORS.pending}`}>
+                                                {STATUS_LABELS[order.status] || 'En attente'}
+                                            </span>
+                                        </td>
+                                        <td className="p-5">
+                                            <span className="font-architects font-bold text-[#b38b59] text-sm">{(order.total || 0).toFixed(2)} CHF</span>
+                                        </td>
+                                        <td className="p-5 text-right">
+                                            <div className="flex items-center gap-2 justify-end">
+                                                <Link href={`/admin/orders/${order.id}`}>
+                                                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-[#4a2128]/5 hover:bg-[#4a2128]/10 text-[#4a2128] rounded-lg font-architects text-xs transition-colors">
+                                                        <Eye size={13} /> Voir
+                                                    </button>
+                                                </Link>
+                                                <div className="relative inline-block">
+                                                    <select value={order.status || 'pending'} onChange={e => updateStatus(order.id, e.target.value)}
+                                                        className="appearance-none bg-gray-50 border border-gray-200 rounded-lg pl-3 pr-8 py-1.5 text-gray-700 text-sm focus:outline-none focus:border-[#b38b59]/60 font-architects cursor-pointer">
+                                                        {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                                                    </select>
+                                                    <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

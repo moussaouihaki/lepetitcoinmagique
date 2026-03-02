@@ -37,12 +37,12 @@ export default function AdminSettingsPage() {
     );
 
     return (
-        <div className="p-8 max-w-xl">
-            <h1 className="font-cinzel text-3xl text-[#4a2128] tracking-widest uppercase mb-2">Paramètres</h1>
-            <p className="font-architects text-gray-500 mb-8">Configuration générale de la boutique</p>
+        <div className="p-4 md:p-8 max-w-xl mx-auto md:mx-0">
+            <h1 className="font-cinzel text-2xl md:text-3xl text-[#4a2128] tracking-widest uppercase mb-2">Paramètres</h1>
+            <p className="font-architects text-sm md:text-base text-gray-500 mb-8">Configuration générale de la boutique</p>
 
             <form onSubmit={handleSave} className="space-y-6">
-                <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                <div className="bg-white border border-gray-100 rounded-2xl p-4 md:p-6 shadow-sm">
                     <div className="flex items-center gap-2 mb-6">
                         <Settings size={18} className="text-[#b38b59]" />
                         <h2 className="font-cinzel text-[#4a2128] text-lg">Livraison</h2>

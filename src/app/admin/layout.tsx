@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
-    LayoutDashboard, Package, ShoppingBag, Users, LogOut, ChevronRight, Settings
+    LayoutDashboard, Package, ShoppingBag, Users, LogOut, ChevronRight, Settings, Menu, X
 } from 'lucide-react';
 
 const navItems = [
@@ -21,6 +21,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const { user, loading, logout } = useAuth();
     const router = useRouter();
     const pathname = usePathname();
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+    // Close mobile menu on route change
+    useEffect(() => {
+        setIsMobileOpen(false);
+    }, [pathname]);
 
     useEffect(() => {
         if (!loading && !user && pathname !== '/admin/login') {
@@ -40,11 +46,40 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (pathname === '/admin/login') return <>{children}</>;
 
     return (
-        <div className="min-h-screen bg-[#fdfaf6] flex">
+        <div className="min-h-screen bg-[#fdfaf6] flex flex-col md:flex-row">
+            {/* Mobile Top Bar */}
+            <div className="md:hidden bg-white border-b border-gray-100 flex items-center justify-between p-4 sticky top-0 z-40 shadow-sm">
+                <div className="flex items-center gap-3">
+                    <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#b38b59]/30">
+                        <Image
+                            src="https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/fb_img_1747862163342-1-high.jpg"
+                            alt="Logo"
+                            fill
+                            className="object-cover"
+                        />
+                    </div>
+                    <span className="font-cinzel text-[#4a2128] font-bold tracking-widest text-sm">GRIMOIRE ADMIN</span>
+                </div>
+                <button
+                    onClick={() => setIsMobileOpen(!isMobileOpen)}
+                    className="p-2 -mr-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                >
+                    {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+            </div>
+
+            {/* Mobile Overlay */}
+            {isMobileOpen && (
+                <div
+                    className="fixed inset-0 bg-[#4a2128]/20 backdrop-blur-sm z-40 md:hidden"
+                    onClick={() => setIsMobileOpen(false)}
+                />
+            )}
+
             {/* Sidebar */}
-            <aside className="w-64 bg-white border-r border-gray-100 flex flex-col fixed h-full z-50 shadow-sm">
+            <aside className={`w-64 bg-white border-r border-gray-100 flex flex-col fixed h-full z-50 shadow-sm transition-transform duration-300 md:translate-x-0 ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 {/* Brand */}
-                <div className="p-6 border-b border-gray-100">
+                <div className="p-6 border-b border-gray-100 hidden md:block">
                     <div className="flex items-center gap-3">
                         <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-[#b38b59]/30 flex-shrink-0">
                             <Image
@@ -105,7 +140,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </aside>
 
             {/* Main content */}
-            <main className="ml-64 flex-1 min-h-screen bg-[#fdfaf6]">
+            <main className="md:ml-64 flex-1 min-h-screen bg-[#fdfaf6] p-4 md:p-8 overflow-x-hidden">
                 {children}
             </main>
         </div>
