@@ -41,7 +41,14 @@ export default function Header() {
                         <button className="text-[#4a2128]" onClick={() => setMobileMenuOpen(true)}>
                             <Menu size={32} strokeWidth={1.5} />
                         </button>
-                        <Link href="/" className="font-cinzel text-2xl text-[#4a2128] font-bold">LPCM</Link>
+                        <Link href="/" className="relative h-14 w-14 rounded-full overflow-hidden border border-[#b38b59] p-0.5 bg-white shadow-sm">
+                            <Image
+                                src="https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/fb_img_1747862163342-1-high.jpg"
+                                alt="Le Petit Coin Magique"
+                                fill
+                                className="object-cover rounded-full"
+                            />
+                        </Link>
                         <Link href="/cart" className="relative text-[#4a2128]">
                             <ShoppingCart size={28} strokeWidth={1.5} />
                             {totalItems > 0 && (
