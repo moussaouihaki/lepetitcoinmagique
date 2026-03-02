@@ -31,8 +31,13 @@ export default function Footer() {
                     </ul>
                 </div>
             </div>
-            <div className="text-center mt-12 opacity-50 text-sm">
-                © {new Date().getFullYear()} Le Petit Coin Magique. Tous droits réservés.
+            <div className="flex flex-col md:flex-row justify-between items-center mt-12 opacity-50 text-xs font-architects">
+                <p>
+                    © {new Date().getFullYear()} Le Petit Coin Magique. Tous droits réservés.
+                </p>
+                <Link href="/admin" className="mt-4 md:mt-0 opacity-40 hover:opacity-100 transition duration-300">
+                    Grimoire
+                </Link>
             </div>
         </footer>
     );

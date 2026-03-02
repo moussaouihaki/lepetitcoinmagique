@@ -43,56 +43,61 @@ export default function CartPage() {
                                     key={item.id}
                                     layout
                                     exit={{ opacity: 0, x: -30, height: 0 }}
-                                    className="bg-white border border-gray-100 rounded-2xl flex gap-4 p-4 shadow-sm"
+                                    className="bg-white border border-gray-100 rounded-2xl flex flex-col sm:flex-row gap-4 p-4 sm:p-5 shadow-sm"
                                 >
-                                    {/* Image */}
-                                    <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0 border border-gray-100">
-                                        {item.image && (
-                                            <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
-                                        )}
-                                    </div>
+                                    <div className="flex items-start gap-4 flex-1">
+                                        {/* Image */}
+                                        <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0 border border-gray-100">
+                                            {item.image && (
+                                                <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
+                                            )}
+                                        </div>
 
-                                    {/* Info */}
-                                    <div className="flex-1 min-w-0">
-                                        <p className="font-cinzel text-[#4a2128] text-sm uppercase tracking-wide">{item.name}</p>
-                                        <p className="font-architects text-gray-400 text-xs mt-0.5">{item.category}</p>
+                                        {/* Info */}
+                                        <div className="flex-1 min-w-0 pt-1">
+                                            <p className="font-cinzel text-[#4a2128] text-sm uppercase tracking-wide leading-tight">{item.name}</p>
+                                            <p className="font-architects text-gray-400 text-xs mt-1">{item.category}</p>
 
-                                        {/* Qty + delete */}
-                                        <div className="flex items-center justify-between mt-3">
-                                            <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
+                                            {/* Qty + delete */}
+                                            <div className="flex items-center gap-4 mt-3 flex-wrap">
+                                                <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden bg-white">
+                                                    <button
+                                                        onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                                                        className="px-3 py-1.5 hover:bg-gray-50 transition-colors text-gray-600"
+                                                    >
+                                                        <Minus size={14} />
+                                                    </button>
+                                                    <span className="px-3 py-1.5 font-architects text-sm font-bold border-x border-gray-200 min-w-[2rem] text-center">
+                                                        {item.quantity}
+                                                    </span>
+                                                    <button
+                                                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                        className="px-3 py-1.5 hover:bg-gray-50 transition-colors text-gray-600"
+                                                    >
+                                                        <Plus size={14} />
+                                                    </button>
+                                                </div>
                                                 <button
-                                                    onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                                                    className="px-3 py-1.5 hover:bg-gray-50 transition-colors text-gray-600"
+                                                    onClick={() => removeItem(item.id)}
+                                                    className="p-1.5 text-gray-300 hover:text-red-400 transition-colors rounded-lg hover:bg-red-50"
                                                 >
-                                                    <Minus size={14} />
-                                                </button>
-                                                <span className="px-3 py-1.5 font-architects text-sm font-bold border-x border-gray-200">
-                                                    {item.quantity}
-                                                </span>
-                                                <button
-                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                    className="px-3 py-1.5 hover:bg-gray-50 transition-colors text-gray-600"
-                                                >
-                                                    <Plus size={14} />
+                                                    <Trash2 size={18} />
                                                 </button>
                                             </div>
-                                            <button
-                                                onClick={() => removeItem(item.id)}
-                                                className="p-2 text-gray-300 hover:text-red-400 transition-colors"
-                                            >
-                                                <Trash2 size={18} />
-                                            </button>
                                         </div>
                                     </div>
 
                                     {/* Price */}
-                                    <div className="flex-shrink-0 text-right">
-                                        <span className="font-architects font-bold text-[#b38b59] text-lg">
-                                            {(item.price * item.quantity).toFixed(2)} CHF
-                                        </span>
-                                        {item.quantity > 1 && (
-                                            <p className="text-gray-400 text-xs mt-0.5">{item.price.toFixed(2)} CHF / unité</p>
-                                        )}
+                                    <div className="flex-shrink-0 sm:text-right border-t border-gray-100 sm:border-0 pt-3 sm:pt-0 mt-2 sm:mt-0 flex sm:block justify-between items-center w-full sm:w-auto">
+                                        <span className="sm:hidden font-architects text-gray-500 text-sm">Sous-total :</span>
+                                        <div>
+                                            <span className="font-architects font-bold text-[#b38b59] text-lg">
+                                                {(item.price * item.quantity).toFixed(2)} CHF
+                                            </span>
+                                            {item.quantity > 1 && (
+                                                <p className="text-gray-400 text-xs mt-0.5">{item.price.toFixed(2)} CHF / unité</p>
+                                            )}
+                                        </div>
                                     </div>
                                 </motion.div>
                             ))}

@@ -117,9 +117,6 @@ export default function Header() {
                     </div>
 
                     <div className="hidden md:flex flex-1 justify-end gap-10 items-center">
-                        <Link href="/admin" className="font-cinzel text-xl tracking-widest text-gray-700 hover:text-[#b38b59] transition-colors uppercase flex items-center gap-2">
-                            <User size={20} strokeWidth={1.5} /> Grimoire
-                        </Link>
                         <Link href="/cart" className="relative text-gray-700 hover:text-[#b38b59] transition-colors flex items-center gap-2">
                             <span className="font-cinzel text-xl tracking-widest uppercase">Panier</span>
                             <ShoppingCart size={20} strokeWidth={1.5} />
