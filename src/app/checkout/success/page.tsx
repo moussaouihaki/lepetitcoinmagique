@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Link from 'next/link';
 import { Check, Sparkles } from 'lucide-react';
 
-export default function CheckoutSuccessPage() {
+function SuccessContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const orderId = searchParams.get('orderId');
@@ -80,5 +80,13 @@ export default function CheckoutSuccessPage() {
                 </p>
             </div>
         </div>
+    );
+}
+
+export default function CheckoutSuccessPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-[#fdfaf6] flex items-center justify-center"><div className="w-8 h-8 border-2 border-[#b38b59] border-t-transparent rounded-full animate-spin" /></div>}>
+            <SuccessContent />
+        </Suspense>
     );
 }
