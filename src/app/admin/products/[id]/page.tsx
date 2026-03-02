@@ -172,22 +172,26 @@ export default function EditProductPage() {
                             {stockNum === 0 && <p className="text-red-500 text-xs mt-1 font-architects">→ Rupture de stock</p>}
                         </div>
                         <div>
-                            {/* Catégorie libre - tape ou choisit */}
+                            {/* Catégorie */}
                             <label className="block text-gray-600 text-sm font-architects mb-2">
-                                Catégorie <span className="text-[#b38b59] text-xs">(nouvelle possible)</span>
+                                Catégorie *
                             </label>
+                            <select
+                                value={existingCategories.includes(form.category) ? form.category : ''}
+                                onChange={e => setForm({ ...form, category: e.target.value })}
+                                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-[#b38b59]/60 font-architects mb-2"
+                            >
+                                <option value="" disabled>-- Catégories existantes --</option>
+                                {existingCategories.map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
                             <input
                                 type="text"
-                                list="categories-list"
+                                required
                                 value={form.category}
                                 onChange={e => setForm({ ...form, category: e.target.value.toUpperCase() })}
-                                placeholder="Ex: BIJOUX"
-                                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-[#b38b59]/60 font-architects uppercase"
+                                placeholder="Ou écrire la catégorie ici..."
+                                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-[#b38b59]/60 font-architects uppercase text-sm"
                             />
-                            <datalist id="categories-list">
-                                {existingCategories.map(c => <option key={c} value={c} />)}
-                            </datalist>
-                            <p className="text-gray-400 text-xs mt-1 font-architects">Tape un nouveau nom pour créer une catégorie</p>
                         </div>
                     </div>
 
