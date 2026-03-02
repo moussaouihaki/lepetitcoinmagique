@@ -3,18 +3,15 @@ import { Product } from '@/store/cart';
 import Image from 'next/image';
 
 async function getProducts() {
-  const res = await fetch('http://localhost:3000/api/products', { cache: 'no-store' });
-  if (!res.ok) {
-    try {
-      const fs = require('fs');
-      const path = require('path');
-      const p = path.join(process.cwd(), 'data', 'products.json');
-      return JSON.parse(fs.readFileSync(p, 'utf8'));
-    } catch {
-      return [];
-    }
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const p = path.join(process.cwd(), 'data', 'products.json');
+    return JSON.parse(fs.readFileSync(p, 'utf8'));
+  } catch (error) {
+    console.error('Error loading products:', error);
+    return [];
   }
-  return res.json();
 }
 
 export default async function Home() {
