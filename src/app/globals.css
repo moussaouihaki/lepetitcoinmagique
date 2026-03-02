@@ -1,26 +1,68 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Royal Gold & Deep Mystic Wine Colors for a Premium Magical Vibe */
+  --color-brand: #b38b59;
+  /* Soft Vintage Gold */
+  --color-brand-light: #d1b184;
+  /* Pale Gold */
+  --color-brand-dark: #8f683a;
+  /* Deep Antique Bronze */
+  --color-mystic: #4a2128;
+  /* Deep Wine / Dark Crimson */
+  --color-mystic-light: #703841;
+  --color-background: #FDFBF8;
+  /* Warm Parchment White */
+  --color-surface: #ffffff;
+  --color-foreground: #2c2522;
+  /* Rich warm dark brown */
+
+  --font-cinzel: var(--font-cinzel-google), serif;
+  --font-architects: var(--font-architects-google), cursive;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    @apply font-sans antialiased bg-[#FDFBF8] selection:bg-[#b38b59]/30 selection:text-[#4a2128];
+    /* Subtle background noise texture for a raw artisanal feel */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Elegant Scrollable UI */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5dccf;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b38b59;
+}
+
+/* Elegant Gradients */
+.gold-gradient-text {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-[#8f683a] via-[#b38b59] to-[#8f683a];
+}
+
+/* Beautiful custom border */
+.border-gold {
+  border-color: rgba(179, 139, 89, 0.3);
+}
+
+.shadow-premium {
+  box-shadow: 0 20px 40px -10px rgba(74, 33, 40, 0.05), 0 10px 20px -5px rgba(179, 139, 89, 0.05);
 }

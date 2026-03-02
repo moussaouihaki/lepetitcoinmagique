@@ -1,0 +1,40 @@
+[
+    {
+        "id": "ord_1001",
+        "date": "2026-03-01T10:00:00Z",
+        "customer": "Harry Potter",
+        "email": "h.potter@hogwarts.edu",
+        "total": 57.0,
+        "status": "paid",
+        "items": [
+            {
+                "id": "1",
+                "name": "Petit chaudron Lagertso",
+                "price": 25,
+                "quantity": 1
+            },
+            {
+                "id": "3",
+                "name": "Fantôme gourmand",
+                "price": 32,
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "id": "ord_1002",
+        "date": "2026-03-02T14:30:00Z",
+        "customer": "Gandalf LeGris",
+        "email": "mithrandir@valinor.com",
+        "total": 145.0,
+        "status": "paid",
+        "items": [
+            {
+                "id": "5",
+                "name": "Hache Celtique protection",
+                "price": 145,
+                "quantity": 1
+            }
+        ]
+    }
+]

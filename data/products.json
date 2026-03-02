@@ -1,0 +1,218 @@
+[
+  {
+    "id": "1",
+    "name": "Petit Chaudron Lagertso",
+    "price": 25,
+    "description": "Un petit chaudron enchanté, parfait pour vos préparations magiques.",
+    "category": "LES PETITS CHAUDRONS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/484853248_673672218519787_2593591583290525344_n-high.jpg"
+  },
+  {
+    "id": "2",
+    "name": "petit Chaudron Wunsora",
+    "price": 25,
+    "description": "Chaudron rituel Wunsora.",
+    "category": "LES PETITS CHAUDRONS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/484853367_673672181853124_7875357385538330459_n-high.jpg"
+  },
+  {
+    "id": "3",
+    "name": "petit Chaudron Raidepert",
+    "price": 25,
+    "description": "Chaudron Raidepert fait à la main.",
+    "category": "LES PETITS CHAUDRONS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/485319258_673672121853130_7744124359334697794_n-high.jpg"
+  },
+  {
+    "id": "4",
+    "name": "Petit Chaudron étoile",
+    "price": 25,
+    "description": "Orné de douces étoiles mystiques.",
+    "category": "LES PETITS CHAUDRONS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250611165428-1-high.jpg"
+  },
+  {
+    "id": "5",
+    "name": "Chaudron Lune",
+    "price": 60,
+    "description": "Inspiré par la magie lunaire.",
+    "category": "LES PETITS CHAUDRONS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250903141731-high.jpg"
+  },
+  {
+    "id": "6",
+    "name": "Chaudron tentaculaire",
+    "price": 55,
+    "description": "Design unique des profondeurs de l'océan.",
+    "category": "LES PETITS CHAUDRONS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250903141821-high.jpg"
+  },
+  {
+    "id": "7",
+    "name": "fantôme gourmand",
+    "price": 32,
+    "description": "Petit esprit frappeur.",
+    "category": "POTERIE",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20240902150556-1-high.jpg"
+  },
+  {
+    "id": "8",
+    "name": "Couteau bois de cerf",
+    "price": 95,
+    "description": "Couteau nordique avec un manche en cerf.",
+    "category": "FORGE",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250516170457-1-high.jpg"
+  },
+  {
+    "id": "9",
+    "name": "Hache Celtique protection",
+    "price": 145,
+    "description": "Puissante hache gravée main.",
+    "category": "FORGE",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250516170120-1-high.jpg"
+  },
+  {
+    "id": "10",
+    "name": "Odin",
+    "price": 55,
+    "description": "Pyrogravure sur bois d'Odin.",
+    "category": "PYROGRAVURE",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250603154247-1-high.jpg"
+  },
+  {
+    "id": "11",
+    "name": "L'Arbre de Vie et ses Corbeaux",
+    "price": 45,
+    "description": "Pyrogravure Arbre de Vie.",
+    "category": "PYROGRAVURE",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20240806142835-high.jpg"
+  },
+  {
+    "id": "12",
+    "name": "le Vegvisir",
+    "price": 48,
+    "description": "Symbole runique protecteur.",
+    "category": "PYROGRAVURE",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20240806162256-high.jpg"
+  },
+  {
+    "id": "13",
+    "name": "bouteille en verre Améthyste",
+    "price": 59,
+    "description": "Bouteille énergétique.",
+    "category": "GRAVURE SUR VERRE",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img_20250403_162011-1-high.jpg"
+  },
+  {
+    "id": "14",
+    "name": "Bouteille en verre Osidienne",
+    "price": 59,
+    "description": "Protection contre les énergies négatives.",
+    "category": "GRAVURE SUR VERRE",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img_20250403_162156-high.jpg"
+  },
+  {
+    "id": "15",
+    "name": "Bouteille en verre Cristal de Roche",
+    "price": 59,
+    "description": "Amplificateur spirituel.",
+    "category": "GRAVURE SUR VERRE",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img_20250403_162252-high.jpg"
+  },
+  {
+    "id": "16",
+    "name": "collier bois de cerf et cristal de roche",
+    "price": 35,
+    "description": "Le bois de cerf symbolise la capacité de se régénérer. Gebo signifie l'harmonie entre donner et recevoir.",
+    "category": "BIJOUX",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250514155404-1-high.jpg"
+  },
+  {
+    "id": "17",
+    "name": "Collier bois de cerf et Cristal de Roche",
+    "price": 25,
+    "description": "Fehu apporte une impulsion dans le domaine matériel et l’évolution vers de plus grandes richesses.",
+    "category": "BIJOUX",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250514155438-1-high.jpg"
+  },
+  {
+    "id": "18",
+    "name": "Collier bois de cerf et Tourmaline",
+    "price": 25,
+    "description": "La pierre tourmaline apporte harmonie et équilibre dans la vie.",
+    "category": "BIJOUX",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250522143408-1-high.jpg"
+  },
+  {
+    "id": "19",
+    "name": "Collier Bois de cerf",
+    "price": 25,
+    "description": "Le bois de cerf, qui tombe chaque année, symbolise la capacité de se régénérer.",
+    "category": "BIJOUX",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250522143606-1-high.jpg"
+  },
+  {
+    "id": "20",
+    "name": "Bracelet collection Soleil couchant",
+    "price": 45,
+    "description": "réglable",
+    "category": "BIJOUX",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250514164459-1-high-7j6d7a.jpg"
+  },
+  {
+    "id": "21",
+    "name": "Bracelet collection grain de sable",
+    "price": 40,
+    "description": "réglable",
+    "category": "BIJOUX",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250514155630-1-high-ufugh7.jpg"
+  },
+  {
+    "id": "22",
+    "name": "Laisse Noeud Marin (petit chien)",
+    "price": 38,
+    "description": "Laisse pour petit chien jusqu'à 10kg, max 163cm réglabe sur 3 longueurs. Symbole de l'amour éternel.",
+    "category": "LES POILUS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img_20250226_191026-high.jpg"
+  },
+  {
+    "id": "23",
+    "name": "Laisse Triquetra (petit chien)",
+    "price": 38,
+    "description": "Le triquetra est associé à la déesse Brigid, pour favoriser la guérison et la protection.",
+    "category": "LES POILUS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img_20250226_190832-high.jpg"
+  },
+  {
+    "id": "24",
+    "name": "Laisse fleur de vie (petit chien)",
+    "price": 38,
+    "description": "La Fleur de Vie est un symbole sacré qui représente l'harmonie et l'équilibre.",
+    "category": "LES POILUS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250516164913-1-high.jpg"
+  },
+  {
+    "id": "25",
+    "name": "Le Bâton du Druide du Nord",
+    "price": 175,
+    "description": "Bâton rituel en bois sculpté et gravé à la main.",
+    "category": "CURIOSITÉ",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250516171725-1-high.jpg"
+  },
+  {
+    "id": "26",
+    "name": "Laisse Le triskel du corbeau (chien moyen)",
+    "price": 42,
+    "description": "Laisse max 165cm réglable sur 3 longueurs. Le Triskel représente la trinité et la renaissance.",
+    "category": "LES POILUS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250516163210-1-high.jpg"
+  },
+  {
+    "id": "27",
+    "name": "Laisse noeud de sorcière (chien moyen)",
+    "price": 45,
+    "description": "Le nœud de sorcière est un symbole puissant de protection et de connexion spirituelle.",
+    "category": "LES POILUS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250611160510-1-high.jpg"
+  }
+]
