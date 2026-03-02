@@ -12,7 +12,6 @@ function SuccessContent() {
     const router = useRouter();
     const orderId = searchParams.get('orderId');
     const sessionId = searchParams.get('session_id');
-    const [countdown, setCountdown] = useState(5);
 
     useEffect(() => {
         if (orderId && sessionId) {
@@ -23,20 +22,6 @@ function SuccessContent() {
         }
     }, [orderId, sessionId]);
 
-    // Auto-redirect countdown
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCountdown(prev => {
-                if (prev <= 1) {
-                    clearInterval(timer);
-                    router.push('/');
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-        return () => clearInterval(timer);
-    }, [router]);
 
     return (
         <div className="min-h-screen bg-[#fdfaf6] pt-40 pb-20 flex items-center justify-center">
@@ -74,10 +59,6 @@ function SuccessContent() {
                         Retour à la boutique
                     </button>
                 </Link>
-
-                <p className="font-architects text-gray-400 text-sm">
-                    Redirection automatique dans <span className="text-[#b38b59] font-bold">{countdown}s</span>...
-                </p>
             </div>
         </div>
     );
