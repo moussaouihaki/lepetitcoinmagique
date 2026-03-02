@@ -1,6 +1,15 @@
+'use client';
+
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 export default function Footer() {
+    const [year, setYear] = useState(new Date().getFullYear());
+
+    useEffect(() => {
+        setYear(new Date().getFullYear());
+    }, []);
+
     return (
         <footer className="bg-[#2a2a2a] text-[#f7f6f2] py-12 font-architects mt-16 shadow-inner">
             <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -33,7 +42,7 @@ export default function Footer() {
             </div>
             <div className="container mx-auto px-4 flex flex-col items-center mt-12 opacity-50 text-xs font-architects space-y-2">
                 <p className="text-center">
-                    © {new Date().getFullYear()} Le Petit Coin Magique. Tous droits réservés.
+                    © {year} Le Petit Coin Magique. Tous droits réservés.
                 </p>
                 <Link href="/admin" className="opacity-20 hover:opacity-100 transition duration-300">
                     Grimoire
