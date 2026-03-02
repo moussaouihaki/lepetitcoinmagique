@@ -3,6 +3,7 @@ import { Cinzel_Decorative, Architects_Daughter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const cinzel = Cinzel_Decorative({
   weight: ['400', '700', '900'],
@@ -31,9 +32,11 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${cinzel.variable} ${architects.variable}`}>
       <body className="antialiased min-h-screen flex flex-col font-architects">
-        <Header />
-        <main className="flex-grow pt-32">{children}</main>
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <main className="flex-grow pt-32">{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
