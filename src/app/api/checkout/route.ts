@@ -1,19 +1,17 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-// Define Stripe conditionally to avoid build-time errors when the key is not present
-let stripe: Stripe;
-if (process.env.STRIPE_SECRET_KEY) {
-    stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-        apiVersion: '2026-02-25.clover' as any,
-        httpClient: Stripe.createFetchHttpClient(),
-    });
-}
+// Provide a fallback dummy key to prevent Stripe from crashing during Vercel's build phase module evaluation
+const stripeSecret = process.env.STRIPE_SECRET_KEY || 'sk_test_dummy_key_to_pass_build';
+const stripe = new Stripe(stripeSecret, {
+    apiVersion: '2026-02-25.clover' as any,
+    httpClient: Stripe.createFetchHttpClient(),
+});
 
 export async function POST(req: Request) {
     console.log("Stripe Key exists:", !!process.env.STRIPE_SECRET_KEY, "Length:", process.env.STRIPE_SECRET_KEY?.length);
 
-    if (!process.env.STRIPE_SECRET_KEY || !stripe) {
+    if (!process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY === 'sk_test_dummy_key_to_pass_build') {
         return NextResponse.json({ error: 'Stripe non configuré (Clé secrète introuvable sur le serveur)' }, { status: 500 });
     }
 
