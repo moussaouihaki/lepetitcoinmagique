@@ -1,19 +1,11 @@
 import ProductCard from '@/components/ProductCard';
 import { Product } from '@/store/cart';
-import fs from 'fs';
-import path from 'path';
+import { getProductsFromFirebase } from '@/lib/products';
 
-async function getProducts() {
-    try {
-        const p = path.join(process.cwd(), 'data', 'products.json');
-        return JSON.parse(fs.readFileSync(p, 'utf8'));
-    } catch {
-        return [];
-    }
-}
 
 export default async function CuriositesPage() {
-    const allProducts: Product[] = await getProducts();
+    const allProducts: Product[] = await getProductsFromFirebase();
+
 
     const categories = Array.from(new Set(allProducts.map((p) => p.category.toUpperCase())));
 

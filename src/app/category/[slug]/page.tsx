@@ -1,16 +1,7 @@
 import ProductCard from '@/components/ProductCard';
 import { Product } from '@/store/cart';
-import fs from 'fs';
-import path from 'path';
+import { getProductsFromFirebase } from '@/lib/products';
 
-async function getProducts() {
-    try {
-        const p = path.join(process.cwd(), 'data', 'products.json');
-        return JSON.parse(fs.readFileSync(p, 'utf8'));
-    } catch {
-        return [];
-    }
-}
 
 const CATEGORY_INFO: Record<string, { title: string; description: React.ReactNode }> = {
     'LES PETITS CHAUDRONS': {
@@ -100,7 +91,7 @@ const CATEGORY_INFO: Record<string, { title: string; description: React.ReactNod
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const decodedSlug = decodeURIComponent(slug).toUpperCase();
-    const allProducts: Product[] = await getProducts();
+    const allProducts: Product[] = await getProductsFromFirebase();
 
     const categoryProducts = allProducts.filter(
         (p) => p.category.toUpperCase() === decodedSlug || p.category.toUpperCase() === decodedSlug + 'S'
