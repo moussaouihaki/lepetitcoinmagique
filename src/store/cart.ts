@@ -7,6 +7,7 @@ export interface Product {
     description: string;
     category: string;
     image: string;
+    shippingCost?: number;
 }
 
 export interface CartItem extends Product {

@@ -12,7 +12,7 @@ import { ShoppingCart, ArrowLeft, ShieldCheck, Truck, Sparkles, Package } from '
 
 interface Product {
     id: string; name: string; description: string; price: number;
-    category: string; image: string; images?: string[]; stock?: number; is_available?: boolean;
+    category: string; image: string; images?: string[]; stock?: number; is_available?: boolean; shippingCost?: number;
 }
 
 export default function ProductPage() {
@@ -42,6 +42,7 @@ export default function ProductPage() {
                     images: data.images || (data.image ? [data.image] : []),
                     stock: data.stock,
                     is_available: data.is_available,
+                    shippingCost: data.shippingCost || 7.5,
                 };
                 setProduct(p);
 
@@ -67,7 +68,7 @@ export default function ProductPage() {
 
     const handleAddToCart = () => {
         if (!product) return;
-        addItem({ id: product.id, name: product.name, price: product.price, image: product.image, category: product.category, description: product.description || '' });
+        addItem({ id: product.id, name: product.name, price: product.price, image: product.image, category: product.category, description: product.description || '', shippingCost: product.shippingCost || 7.5 });
         setAdded(true);
         setTimeout(() => setAdded(false), 2000);
     };

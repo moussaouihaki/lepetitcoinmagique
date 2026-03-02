@@ -12,7 +12,7 @@ import Link from 'next/link';
 export default function NewProductPage() {
     const router = useRouter();
     const [form, setForm] = useState({
-        name: '', description: '', price: '', category: '', is_available: true, stock: '1',
+        name: '', description: '', price: '', category: '', is_available: true, stock: '1', shippingCost: '7.5',
     });
     const [existingCategories, setExistingCategories] = useState<string[]>([]);
     const [images, setImages] = useState<File[]>([]);
@@ -60,6 +60,7 @@ export default function NewProductPage() {
             await addDoc(collection(db, 'products'), {
                 name: form.name, description: form.description,
                 price: parseFloat(form.price),
+                shippingCost: parseFloat(form.shippingCost) || 0,
                 category: form.category.toUpperCase(),
                 is_available: form.is_available && stockNum > 0,
                 stock: stockNum,
@@ -144,6 +145,20 @@ export default function NewProductPage() {
                             </datalist>
                             <p className="text-gray-400 text-xs mt-1 font-architects">Tape un nom pour créer une nouvelle catégorie</p>
                         </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-gray-600 text-sm font-architects mb-2 flex items-center justify-between">
+                            <span>Frais de port (CHF) *</span>
+                            <span className="text-[#b38b59] text-xs font-medium">Ex: 11 pour Fragile, 7.5 standard</span>
+                        </label>
+                        <input
+                            type="number" step="0.01" min="0" required
+                            value={form.shippingCost}
+                            onChange={e => setForm({ ...form, shippingCost: e.target.value })}
+                            className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-[#b38b59]/60 font-architects"
+                        />
+                        <p className="text-gray-400 text-xs mt-1 font-architects">Si le client prend plusieurs articles, seul le frais de port le plus élevé sera appliqué.</p>
                     </div>
 
                     {/* Stock status preview */}

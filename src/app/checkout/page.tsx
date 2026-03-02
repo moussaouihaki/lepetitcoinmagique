@@ -10,6 +10,7 @@ import { ShoppingBag, ChevronRight, Truck, Shield, CreditCard, Check, Loader2 } 
 import Link from 'next/link';
 
 type Step = 'cart' | 'shipping';
+type DeliveryMethod = 'shipping' | 'pickup';
 
 export default function CheckoutPage() {
     const { items, totalPrice, clearCart } = useCartStore();
@@ -26,24 +27,14 @@ export default function CheckoutPage() {
         notes: '',
     });
 
-    // Fetch shipping cost from Firebase settings
+    const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>('shipping');
+
     useEffect(() => {
-        const fetchShipping = async () => {
-            try {
-                const snap = await getDoc(doc(db, 'settings', 'shop'));
-                if (snap.exists()) {
-                    setShippingCost(snap.data().shippingCost ?? 11);
-                } else {
-                    setShippingCost(11); // default
-                }
-            } catch {
-                setShippingCost(11);
-            } finally {
-                setLoadingShipping(false);
-            }
-        };
-        fetchShipping();
-    }, []);
+        // Calculate max shipping cost from items
+        const maxShipping = items.reduce((max, item) => Math.max(max, item.shippingCost || 7.5), 0);
+        setShippingCost(deliveryMethod === 'shipping' ? maxShipping : 0);
+        setLoadingShipping(false);
+    }, [items, deliveryMethod]);
 
     const grandTotal = totalPrice + shippingCost;
 
@@ -59,14 +50,15 @@ export default function CheckoutPage() {
                 customerPhone: form.phone,
                 total: grandTotal,
                 shippingCost: shippingCost,
+                deliveryMethod: deliveryMethod,
                 subtotal: totalPrice,
                 status: 'pending',
-                shippingAddress: {
+                shippingAddress: deliveryMethod === 'shipping' ? {
                     address: form.address,
                     city: form.city,
                     zip: form.zip,
                     country: form.country,
-                },
+                } : null,
                 notes: form.notes,
                 paymentMethod: 'stripe',
                 items: items.map(i => ({
@@ -178,21 +170,41 @@ export default function CheckoutPage() {
                                         </div>
                                     ))}
                                 </div>
-                                <div className="p-6 border-t border-gray-100 bg-gray-50/50 space-y-2">
-                                    <div className="flex justify-between font-architects text-sm text-gray-600">
-                                        <span>Sous-total</span><span>{totalPrice.toFixed(2)} CHF</span>
+                                <div className="p-6 border-t border-gray-100 bg-gray-50/50 space-y-4">
+                                    {/* Delivery Method Selector */}
+                                    <div className="grid grid-cols-2 gap-4 pb-4 border-b border-gray-200">
+                                        <button
+                                            onClick={() => setDeliveryMethod('shipping')}
+                                            className={`p-4 rounded-xl border flex flex-col items-center justify-center gap-2 transition-all ${deliveryMethod === 'shipping' ? 'border-[#b38b59] bg-[#b38b59]/5' : 'border-gray-200 bg-white hover:border-[#b38b59]/50'}`}
+                                        >
+                                            <Truck size={24} className={deliveryMethod === 'shipping' ? 'text-[#b38b59]' : 'text-gray-400'} />
+                                            <span className={`font-cinzel text-sm uppercase tracking-wide ${deliveryMethod === 'shipping' ? 'text-[#b38b59] font-bold' : 'text-gray-500'}`}>Livraison</span>
+                                        </button>
+                                        <button
+                                            onClick={() => setDeliveryMethod('pickup')}
+                                            className={`p-4 rounded-xl border flex flex-col items-center justify-center gap-2 transition-all ${deliveryMethod === 'pickup' ? 'border-[#b38b59] bg-[#b38b59]/5' : 'border-gray-200 bg-white hover:border-[#b38b59]/50'}`}
+                                        >
+                                            <ShoppingBag size={24} className={deliveryMethod === 'pickup' ? 'text-[#b38b59]' : 'text-gray-400'} />
+                                            <span className={`font-cinzel text-sm uppercase tracking-wide ${deliveryMethod === 'pickup' ? 'text-[#b38b59] font-bold' : 'text-gray-500'}`}>Sur place</span>
+                                        </button>
                                     </div>
-                                    <div className="flex justify-between font-architects text-sm text-gray-600">
-                                        <span>Frais de port</span>
-                                        <span>{loadingShipping ? '...' : `${shippingCost.toFixed(2)} CHF`}</span>
-                                    </div>
-                                    <div className="flex justify-between font-cinzel text-[#4a2128] text-base border-t border-gray-200 pt-2">
-                                        <span>Total</span>
-                                        <span className="text-[#b38b59] font-bold">{grandTotal.toFixed(2)} CHF</span>
+
+                                    <div className="space-y-2">
+                                        <div className="flex justify-between font-architects text-sm text-gray-600">
+                                            <span>Sous-total</span><span>{totalPrice.toFixed(2)} CHF</span>
+                                        </div>
+                                        <div className="flex justify-between font-architects text-sm text-gray-600">
+                                            <span>Frais de port</span>
+                                            <span>{loadingShipping ? '...' : shippingCost === 0 ? 'Gratuit' : `${shippingCost.toFixed(2)} CHF`}</span>
+                                        </div>
+                                        <div className="flex justify-between font-cinzel text-[#4a2128] text-base border-t border-gray-200 pt-2">
+                                            <span>Total</span>
+                                            <span className="text-[#b38b59] font-bold">{grandTotal.toFixed(2)} CHF</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="p-6">
-                                    <button onClick={() => setStep('shipping')} className="w-full bg-[#4a2128] text-white font-cinzel tracking-widest py-4 rounded-xl uppercase hover:bg-[#b38b59] transition-colors flex items-center justify-center gap-2">
+                                    <button onClick={() => setStep('shipping')} className="w-full bg-[#4a2128] text-white font-cinzel tracking-widest py-4 rounded-xl uppercase hover:bg-[#b38b59] transition-colors flex items-center justify-center gap-2 shadow-sm">
                                         Continuer <ChevronRight size={18} />
                                     </button>
                                 </div>
@@ -209,7 +221,8 @@ export default function CheckoutPage() {
 
                                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
                                     <h2 className="font-cinzel text-xl text-[#4a2128] uppercase tracking-widest mb-6 flex items-center gap-2">
-                                        <Truck size={20} /> Informations de livraison
+                                        {deliveryMethod === 'shipping' ? <Truck size={20} /> : <ShoppingBag size={20} />}
+                                        {deliveryMethod === 'shipping' ? 'Informations de livraison' : 'Informations de contact'}
                                     </h2>
                                     <div className="grid grid-cols-2 gap-4 mb-4">
                                         <div><label className="block text-gray-600 text-sm font-architects mb-1">Prénom *</label><input required type="text" value={form.firstName} onChange={e => setForm({ ...form, firstName: e.target.value })} className={inputClass} /></div>
@@ -219,12 +232,16 @@ export default function CheckoutPage() {
                                         <div><label className="block text-gray-600 text-sm font-architects mb-1">Email *</label><input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={inputClass} /></div>
                                         <div><label className="block text-gray-600 text-sm font-architects mb-1">Téléphone</label><input type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className={inputClass} /></div>
                                     </div>
-                                    <div className="mb-4"><label className="block text-gray-600 text-sm font-architects mb-1">Adresse *</label><input required type="text" value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} className={inputClass} /></div>
-                                    <div className="grid grid-cols-3 gap-4 mb-4">
-                                        <div><label className="block text-gray-600 text-sm font-architects mb-1">NPA *</label><input required type="text" value={form.zip} onChange={e => setForm({ ...form, zip: e.target.value })} className={inputClass} /></div>
-                                        <div className="col-span-2"><label className="block text-gray-600 text-sm font-architects mb-1">Ville *</label><input required type="text" value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} className={inputClass} /></div>
-                                    </div>
-                                    <div><label className="block text-gray-600 text-sm font-architects mb-1">Notes</label><textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} rows={2} placeholder="Instructions de livraison..." className={`${inputClass} resize-none`} /></div>
+                                    {deliveryMethod === 'shipping' && (
+                                        <>
+                                            <div className="mb-4"><label className="block text-gray-600 text-sm font-architects mb-1">Adresse *</label><input required type="text" value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} className={inputClass} /></div>
+                                            <div className="grid grid-cols-3 gap-4 mb-4">
+                                                <div><label className="block text-gray-600 text-sm font-architects mb-1">NPA *</label><input required type="text" value={form.zip} onChange={e => setForm({ ...form, zip: e.target.value })} className={inputClass} /></div>
+                                                <div className="col-span-2"><label className="block text-gray-600 text-sm font-architects mb-1">Ville *</label><input required type="text" value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} className={inputClass} /></div>
+                                            </div>
+                                        </>
+                                    )}
+                                    <div><label className="block text-gray-600 text-sm font-architects mb-1">Notes {deliveryMethod === 'pickup' && '(Optionnel, ex: date de retrait)'}</label><textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} rows={2} placeholder={deliveryMethod === 'shipping' ? "Instructions de livraison..." : "Heure ou jour de retrait souhaité..."} className={`${inputClass} resize-none`} /></div>
                                 </div>
 
                                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">

@@ -121,7 +121,7 @@ export default function Header() {
                             <span className="font-cinzel text-xl tracking-widest uppercase">Panier</span>
                             <ShoppingCart size={20} strokeWidth={1.5} />
                             {totalItems > 0 && (
-                                <span className="absolute -top-3 -right-3 bg-[#4a2128] text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                                <span className="absolute -top-3 -right-3 bg-[#b38b59] text-white text-[11px] rounded-full h-[22px] w-[22px] flex items-center justify-center font-bold shadow-sm">
                                     {totalItems}
                                 </span>
                             )}
