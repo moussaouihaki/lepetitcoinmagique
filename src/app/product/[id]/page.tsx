@@ -67,7 +67,7 @@ export default function ProductPage() {
 
     const handleAddToCart = () => {
         if (!product) return;
-        addItem({ id: product.id, name: product.name, price: product.price, image: product.image, category: product.category, quantity: 1 });
+        addItem({ id: product.id, name: product.name, price: product.price, image: product.image, category: product.category, description: product.description || '' });
         setAdded(true);
         setTimeout(() => setAdded(false), 2000);
     };
@@ -157,10 +157,10 @@ export default function ProductPage() {
                                 onClick={handleAddToCart}
                                 disabled={outOfStock}
                                 className={`flex-1 font-cinzel text-xl tracking-widest py-6 px-10 border transition-all duration-500 uppercase flex items-center justify-center gap-4 group ${outOfStock
-                                        ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                                        : added
-                                            ? 'bg-[#b38b59] text-white border-[#b38b59]'
-                                            : 'bg-[#4a2128] text-white border-[#4a2128] hover:bg-transparent hover:text-[#4a2128]'
+                                    ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                                    : added
+                                        ? 'bg-[#b38b59] text-white border-[#b38b59]'
+                                        : 'bg-[#4a2128] text-white border-[#4a2128] hover:bg-transparent hover:text-[#4a2128]'
                                     }`}
                             >
                                 <ShoppingCart size={24} className="group-hover:scale-110 transition-transform" />
