@@ -1,24 +1,86 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { useCartStore } from '@/store/cart';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingCart, ArrowLeft, ShieldCheck, Truck, Sparkles } from 'lucide-react';
-import fs from 'fs';
-import path from 'path';
-import { Product } from '@/store/cart';
 import ProductCard from '@/components/ProductCard';
+import { ShoppingCart, ArrowLeft, ShieldCheck, Truck, Sparkles, Package } from 'lucide-react';
 
-async function getProducts(): Promise<Product[]> {
-    try {
-        const p = path.join(process.cwd(), 'data', 'products.json');
-        return JSON.parse(fs.readFileSync(p, 'utf8'));
-    } catch {
-        return [];
-    }
+interface Product {
+    id: string; name: string; description: string; price: number;
+    category: string; image: string; images?: string[]; stock?: number; is_available?: boolean;
 }
 
-export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
-    const allProducts = await getProducts();
-    const product = allProducts.find((p) => p.id === id);
+export default function ProductPage() {
+    const params = useParams();
+    const id = params.id as string;
+    const router = useRouter();
+    const { addItem } = useCartStore();
+
+    const [product, setProduct] = useState<Product | null>(null);
+    const [related, setRelated] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [added, setAdded] = useState(false);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const snap = await getDoc(doc(db, 'products', id));
+                if (!snap.exists()) { setLoading(false); return; }
+                const data = snap.data();
+                const p: Product = {
+                    id: snap.id,
+                    name: data.name || '',
+                    description: data.description || '',
+                    price: data.price || 0,
+                    category: data.category || '',
+                    image: data.images?.[0] || data.image || '',
+                    images: data.images || (data.image ? [data.image] : []),
+                    stock: data.stock,
+                    is_available: data.is_available,
+                };
+                setProduct(p);
+
+                // Fetch related
+                const allSnap = await getDocs(collection(db, 'products'));
+                const allProds = allSnap.docs
+                    .filter(d => d.id !== id && d.data().category === data.category && d.data().is_available !== false)
+                    .slice(0, 4)
+                    .map(d => ({
+                        id: d.id,
+                        name: d.data().name || '',
+                        description: d.data().description || '',
+                        price: d.data().price || 0,
+                        category: d.data().category || '',
+                        image: d.data().images?.[0] || d.data().image || '',
+                    }));
+                setRelated(allProds);
+            } catch (e) { console.error(e); }
+            finally { setLoading(false); }
+        };
+        fetchProduct();
+    }, [id]);
+
+    const handleAddToCart = () => {
+        if (!product) return;
+        addItem({ id: product.id, name: product.name, price: product.price, image: product.image, category: product.category, quantity: 1 });
+        setAdded(true);
+        setTimeout(() => setAdded(false), 2000);
+    };
+
+    const outOfStock = product?.stock !== undefined && product.stock <= 0;
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-[#fdfaf6] pt-40 flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-[#b38b59] border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
+    }
 
     if (!product) {
         return (
@@ -31,10 +93,6 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             </div>
         );
     }
-
-    const relatedProducts = allProducts
-        .filter((p) => p.category === product.category && p.id !== product.id)
-        .slice(0, 4);
 
     return (
         <div className="bg-[#fdfaf6] min-h-screen pt-32 pb-20">
@@ -49,26 +107,25 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                 </nav>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-                    {/* Image Section */}
+                    {/* Image */}
                     <div className="relative group">
                         <div className="absolute inset-0 bg-[#b38b59]/5 blur-3xl rounded-full scale-75 -z-10" />
-                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-white p-4 border border-gold shadow-premium">
-                            <div className="relative w-full h-full border border-gold/30">
-                                <Image
-                                    src={product.image}
-                                    alt={product.name}
-                                    fill
-                                    className="object-contain p-8"
-                                    priority
-                                />
+                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-white p-4 border border-[#b38b59]/20 shadow-lg">
+                            <div className="relative w-full h-full border border-[#b38b59]/10">
+                                {product.image ? (
+                                    <Image src={product.image} alt={product.name} fill className="object-contain p-8" priority />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center">
+                                        <Package size={64} className="text-gray-200" />
+                                    </div>
+                                )}
                             </div>
                         </div>
-                        {/* Decorative ornaments */}
-                        <div className="absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-gold/40" />
-                        <div className="absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-gold/40" />
+                        <div className="absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-[#b38b59]/40" />
+                        <div className="absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-[#b38b59]/40" />
                     </div>
 
-                    {/* Content Section */}
+                    {/* Content */}
                     <div className="flex flex-col">
                         <div className="mb-10">
                             <span className="font-architects text-[#b38b59] text-sm uppercase tracking-[0.4em] font-bold mb-4 block">
@@ -81,6 +138,13 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                             <p className="font-architects text-3xl text-[#4a2128] font-bold">
                                 {product.price.toFixed(2)} <span className="text-xl">CHF</span>
                             </p>
+
+                            {/* Stock badge */}
+                            {product.stock !== undefined && (
+                                <p className={`font-architects text-sm mt-3 ${outOfStock ? 'text-red-500' : product.stock <= 3 ? 'text-orange-500' : 'text-green-600'}`}>
+                                    {outOfStock ? '✗ Rupture de stock' : product.stock <= 3 ? `⚠ Plus que ${product.stock} en stock` : `✓ En stock (${product.stock})`}
+                                </p>
+                            )}
                         </div>
 
                         <div className="font-architects text-lg lg:text-xl text-gray-600 leading-relaxed mb-12 space-y-6">
@@ -89,33 +153,39 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-6 mb-16">
-                            {/* Add to Cart logic would need client component, keeping it simple for now or using a wrapper */}
-                            <button className="flex-1 bg-[#4a2128] text-white font-cinzel text-xl tracking-widest py-6 px-10 border border-[#4a2128] hover:bg-transparent hover:text-[#4a2128] transition-all duration-500 uppercase flex items-center justify-center gap-4 group">
+                            <button
+                                onClick={handleAddToCart}
+                                disabled={outOfStock}
+                                className={`flex-1 font-cinzel text-xl tracking-widest py-6 px-10 border transition-all duration-500 uppercase flex items-center justify-center gap-4 group ${outOfStock
+                                        ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                                        : added
+                                            ? 'bg-[#b38b59] text-white border-[#b38b59]'
+                                            : 'bg-[#4a2128] text-white border-[#4a2128] hover:bg-transparent hover:text-[#4a2128]'
+                                    }`}
+                            >
                                 <ShoppingCart size={24} className="group-hover:scale-110 transition-transform" />
-                                Ajouter au Grimoire
+                                {outOfStock ? 'Rupture de stock' : added ? 'Ajouté !' : 'Ajouter au Grimoire'}
                             </button>
                         </div>
 
                         {/* Reassurance */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-10 border-t border-gold/20">
-                            <div className="flex flex-col items-center md:items-start text-center md:text-left gap-3">
-                                <Sparkles className="text-[#b38b59]" size={24} />
-                                <span className="font-cinzel text-xs uppercase tracking-widest text-[#2c2522]">Créé à la main</span>
-                            </div>
-                            <div className="flex flex-col items-center md:items-start text-center md:text-left gap-3">
-                                <Truck className="text-[#b38b59]" size={24} />
-                                <span className="font-cinzel text-xs uppercase tracking-widest text-[#2c2522]">Envoi Magique</span>
-                            </div>
-                            <div className="flex flex-col items-center md:items-start text-center md:text-left gap-3">
-                                <ShieldCheck className="text-[#b38b59]" size={24} />
-                                <span className="font-cinzel text-xs uppercase tracking-widest text-[#2c2522]">Paiement Sécurisé</span>
-                            </div>
+                        <div className="grid grid-cols-3 gap-8 py-10 border-t border-[#b38b59]/20">
+                            {[
+                                { icon: Sparkles, label: 'Créé à la main' },
+                                { icon: Truck, label: 'Envoi Magique' },
+                                { icon: ShieldCheck, label: 'Paiement Sécurisé' },
+                            ].map(({ icon: Icon, label }) => (
+                                <div key={label} className="flex flex-col items-center text-center gap-3">
+                                    <Icon className="text-[#b38b59]" size={24} />
+                                    <span className="font-cinzel text-xs uppercase tracking-widest text-[#2c2522]">{label}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
 
                 {/* Related Products */}
-                {relatedProducts.length > 0 && (
+                {related.length > 0 && (
                     <div className="mt-40">
                         <div className="flex flex-col items-center text-center mb-20">
                             <span className="font-architects text-[#b38b59] text-xl mb-4">Dans la même collection</span>
@@ -123,9 +193,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                             <div className="w-1.5 h-1.5 bg-[#b38b59] rotate-45 mt-8" />
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-24 gap-x-12">
-                            {relatedProducts.map((p) => (
-                                <ProductCard key={p.id} product={p} />
-                            ))}
+                            {related.map((p) => <ProductCard key={p.id} product={p} />)}
                         </div>
                     </div>
                 )}
