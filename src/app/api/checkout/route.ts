@@ -3,15 +3,19 @@ import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
     apiVersion: '2026-02-25.clover',
+    httpClient: Stripe.createFetchHttpClient(),
 });
 
 export async function POST(req: Request) {
+    console.log("Stripe Key exists:", !!process.env.STRIPE_SECRET_KEY, "Length:", process.env.STRIPE_SECRET_KEY?.length);
+
     if (!process.env.STRIPE_SECRET_KEY) {
-        return NextResponse.json({ error: 'Stripe non configuré' }, { status: 500 });
+        return NextResponse.json({ error: 'Stripe non configuré (Clé secrète introuvable sur le serveur)' }, { status: 500 });
     }
 
     try {
         const { items, orderId, customerEmail, shippingCost } = await req.json();
+
         const origin = req.headers.get('origin') || 'https://le-petit-coin-magique.vercel.app';
 
         const lineItems = items.map((item: any) => ({
