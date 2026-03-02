@@ -6,23 +6,25 @@ import { ShoppingCart, User, Menu, X, ChevronDown } from 'lucide-react';
 import { useCartStore } from '@/store/cart';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const categories = [
-    'LES PETITS CHAUDRONS',
-    'POTERIE',
-    'FORGE',
-    'PYROGRAVURE',
-    'GRAVURE SUR VERRE',
-    'BIJOUX',
-    'LES POILUS',
-    'CURIOSITÉ',
-];
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export default function Header() {
     const { totalItems } = useCartStore();
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [mobileBoutiqueOpen, setMobileBoutiqueOpen] = useState(false);
+    const [categories, setCategories] = useState<string[]>([]);
+
+    useEffect(() => {
+        // Fetch categories dynamically from Firebase
+        getDocs(collection(db, 'products')).then(snap => {
+            const cats = [...new Set(
+                snap.docs.map(d => (d.data().category || '').toUpperCase()).filter(Boolean)
+            )].sort();
+            setCategories(cats);
+        }).catch(() => { });
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => {

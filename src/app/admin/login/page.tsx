@@ -30,16 +30,17 @@ export default function AdminLoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#0d0d0d] flex items-center justify-center p-6">
-            {/* Background glow */}
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#b38b59]/5 rounded-full blur-3xl" />
+        <div className="min-h-screen bg-[#fdfaf6] flex items-center justify-center p-6">
+            {/* Background decoration */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#b38b59]/30 to-transparent" />
+                <div className="absolute inset-8 border border-[#b38b59]/10" />
             </div>
 
             <div className="relative w-full max-w-md">
                 {/* Logo */}
                 <div className="text-center mb-10">
-                    <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-[#b38b59]/50 mx-auto mb-4 shadow-lg">
+                    <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-[#b38b59]/40 mx-auto mb-5 shadow-md">
                         <Image
                             src="https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/fb_img_1747862163342-1-high.jpg"
                             alt="Le Petit Coin Magique"
@@ -47,52 +48,52 @@ export default function AdminLoginPage() {
                             className="object-cover"
                         />
                     </div>
-                    <h1 className="font-cinzel text-3xl text-white tracking-widest uppercase">Grimoire Admin</h1>
+                    <h1 className="font-cinzel text-3xl text-[#4a2128] tracking-widest uppercase">Grimoire Admin</h1>
                     <p className="text-gray-500 mt-2 font-architects">Le Petit Coin Magique</p>
                 </div>
 
                 {/* Card */}
-                <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-8 shadow-2xl">
-                    <h2 className="font-cinzel text-xl text-white mb-6 text-center">Accès Réservé</h2>
+                <div className="bg-white border border-gray-100 rounded-2xl p-8 shadow-md">
+                    <h2 className="font-cinzel text-xl text-[#4a2128] mb-6 text-center">Accès Réservé</h2>
 
                     {error && (
-                        <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-lg p-3 mb-6 text-sm font-architects">
+                        <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl p-3 mb-6 text-sm font-architects">
                             {error}
                         </div>
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label className="block text-gray-400 text-sm font-architects mb-2">Email administrateur</label>
+                            <label className="block text-gray-600 text-sm font-architects mb-2">Email administrateur</label>
                             <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                                 <input
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="admin@example.com"
+                                    placeholder="admin@lepetitcoinmagique.com"
                                     required
-                                    className="w-full bg-[#111] border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#b38b59]/50 transition-colors font-architects"
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#b38b59]/60 transition-colors font-architects"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-gray-400 text-sm font-architects mb-2">Mot de passe</label>
+                            <label className="block text-gray-600 text-sm font-architects mb-2">Mot de passe</label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
                                     required
-                                    className="w-full bg-[#111] border border-white/10 rounded-xl pl-10 pr-12 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[#b38b59]/50 transition-colors font-architects"
+                                    className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-12 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#b38b59]/60 transition-colors font-architects"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                                 >
                                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
@@ -102,15 +103,15 @@ export default function AdminLoginPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-[#b38b59] hover:bg-[#c9a06e] text-white font-cinzel tracking-widest py-3.5 rounded-xl transition-all duration-300 uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-[#4a2128] hover:bg-[#b38b59] text-white font-cinzel tracking-widest py-3.5 rounded-xl transition-all duration-300 uppercase disabled:opacity-50"
                         >
                             {loading ? 'Authentification...' : 'Entrer dans le Grimoire'}
                         </button>
                     </form>
                 </div>
 
-                <p className="text-center text-gray-700 text-sm mt-6 font-architects">
-                    Accès réservé aux administrateurs du Petit Coin Magique
+                <p className="text-center text-gray-400 text-sm mt-6 font-architects">
+                    Accès réservé aux administrateurs
                 </p>
             </div>
         </div>

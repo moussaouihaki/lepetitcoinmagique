@@ -29,24 +29,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#0d0d0d] flex items-center justify-center">
+            <div className="min-h-screen bg-[#fdfaf6] flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-[#b38b59] border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
 
     if (!user && pathname !== '/admin/login') return null;
-
     if (pathname === '/admin/login') return <>{children}</>;
 
     return (
-        <div className="min-h-screen bg-[#0d0d0d] flex">
+        <div className="min-h-screen bg-[#fdfaf6] flex">
             {/* Sidebar */}
-            <aside className="w-64 bg-[#111] border-r border-white/5 flex flex-col fixed h-full z-50">
+            <aside className="w-64 bg-white border-r border-gray-100 flex flex-col fixed h-full z-50 shadow-sm">
                 {/* Brand */}
-                <div className="p-6 border-b border-white/5">
+                <div className="p-6 border-b border-gray-100">
                     <div className="flex items-center gap-3">
-                        <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#b38b59]/30 flex-shrink-0">
+                        <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-[#b38b59]/30 flex-shrink-0">
                             <Image
                                 src="https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/fb_img_1747862163342-1-high.jpg"
                                 alt="Le Petit Coin Magique"
@@ -55,8 +54,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             />
                         </div>
                         <div>
-                            <p className="font-cinzel text-white text-sm tracking-widest">ADMIN</p>
-                            <p className="text-gray-600 text-xs font-architects">Le Petit Coin Magique</p>
+                            <p className="font-cinzel text-[#4a2128] text-sm tracking-widest">ADMIN</p>
+                            <p className="text-gray-400 text-xs font-architects">Le Petit Coin Magique</p>
                         </div>
                     </div>
                 </div>
@@ -71,8 +70,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 key={item.href}
                                 href={item.href}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive
-                                    ? 'bg-[#b38b59]/15 text-[#b38b59] border border-[#b38b59]/20'
-                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                    ? 'bg-[#4a2128]/5 text-[#4a2128] border border-[#4a2128]/10'
+                                    : 'text-gray-500 hover:text-[#4a2128] hover:bg-gray-50'
                                     }`}
                             >
                                 <Icon size={18} className={isActive ? 'text-[#b38b59]' : ''} />
@@ -84,19 +83,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </nav>
 
                 {/* User + Logout */}
-                <div className="p-4 border-t border-white/5">
+                <div className="p-4 border-t border-gray-100">
                     <div className="flex items-center gap-3 px-4 py-3 mb-2">
-                        <div className="w-8 h-8 rounded-full bg-[#b38b59]/20 flex items-center justify-center text-[#b38b59] text-xs font-bold">
+                        <div className="w-8 h-8 rounded-full bg-[#4a2128]/10 flex items-center justify-center text-[#4a2128] text-xs font-bold flex-shrink-0">
                             A
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-white text-sm font-architects truncate">{user?.email}</p>
-                            <p className="text-gray-600 text-xs">Administrateur</p>
+                            <p className="text-gray-700 text-sm font-architects truncate">{user?.email}</p>
+                            <p className="text-gray-400 text-xs">Administrateur</p>
                         </div>
                     </div>
                     <button
                         onClick={async () => { await logout(); router.push('/admin/login'); }}
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-red-400 hover:bg-red-500/5 transition-all duration-200"
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:text-red-500 hover:bg-red-50 transition-all duration-200"
                     >
                         <LogOut size={18} />
                         <span className="font-architects text-sm">Déconnexion</span>
@@ -105,7 +104,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </aside>
 
             {/* Main content */}
-            <main className="ml-64 flex-1 min-h-screen">
+            <main className="ml-64 flex-1 min-h-screen bg-[#fdfaf6]">
                 {children}
             </main>
         </div>
