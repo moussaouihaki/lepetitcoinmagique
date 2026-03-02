@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { Sparkles, Lock, Mail, Eye, EyeOff } from 'lucide-react';
+import Image from 'next/image';
+import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
 
 export default function AdminLoginPage() {
     const [email, setEmail] = useState('');
@@ -38,8 +39,13 @@ export default function AdminLoginPage() {
             <div className="relative w-full max-w-md">
                 {/* Logo */}
                 <div className="text-center mb-10">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#b38b59]/10 border border-[#b38b59]/30 mb-4">
-                        <Sparkles className="text-[#b38b59]" size={28} />
+                    <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-[#b38b59]/50 mx-auto mb-4 shadow-lg">
+                        <Image
+                            src="https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/fb_img_1747862163342-1-high.jpg"
+                            alt="Le Petit Coin Magique"
+                            fill
+                            className="object-cover"
+                        />
                     </div>
                     <h1 className="font-cinzel text-3xl text-white tracking-widest uppercase">Grimoire Admin</h1>
                     <p className="text-gray-500 mt-2 font-architects">Le Petit Coin Magique</p>

@@ -4,8 +4,9 @@ import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
-    LayoutDashboard, Package, ShoppingBag, Users, LogOut, Sparkles, ChevronRight
+    LayoutDashboard, Package, ShoppingBag, Users, LogOut, ChevronRight
 } from 'lucide-react';
 
 const navItems = [
@@ -45,8 +46,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {/* Brand */}
                 <div className="p-6 border-b border-white/5">
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-[#b38b59]/20 border border-[#b38b59]/30 flex items-center justify-center">
-                            <Sparkles size={16} className="text-[#b38b59]" />
+                        <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#b38b59]/30 flex-shrink-0">
+                            <Image
+                                src="https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/fb_img_1747862163342-1-high.jpg"
+                                alt="Le Petit Coin Magique"
+                                fill
+                                className="object-cover"
+                            />
                         </div>
                         <div>
                             <p className="font-cinzel text-white text-sm tracking-widest">ADMIN</p>
@@ -65,8 +71,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 key={item.href}
                                 href={item.href}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive
-                                        ? 'bg-[#b38b59]/15 text-[#b38b59] border border-[#b38b59]/20'
-                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                    ? 'bg-[#b38b59]/15 text-[#b38b59] border border-[#b38b59]/20'
+                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
                                     }`}
                             >
                                 <Icon size={18} className={isActive ? 'text-[#b38b59]' : ''} />

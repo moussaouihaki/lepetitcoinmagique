@@ -27,10 +27,10 @@ const firebaseConfig = {
     appId: "1:588757720945:web:2ca62deb422fdbaa44a0d0",
 };
 
-// ===== REMPLIS ICI AVEC TES IDENTIFIANTS ADMIN FIREBASE =====
-const ADMIN_EMAIL = 'TON_EMAIL_ADMIN@example.com';
-const ADMIN_PASSWORD = 'TON_MOT_DE_PASSE';
-// ============================================================
+// ===== IDENTIFIANTS ADMIN FIREBASE =====
+const ADMIN_EMAIL = 'admin@lepetitcoinmagique.com';
+const ADMIN_PASSWORD = 'Test123';
+// ========================================
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
