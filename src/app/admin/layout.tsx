@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
-    LayoutDashboard, Package, ShoppingBag, Users, LogOut, ChevronRight
+    LayoutDashboard, Package, ShoppingBag, Users, LogOut, ChevronRight, Settings
 } from 'lucide-react';
 
 const navItems = [
@@ -14,6 +14,7 @@ const navItems = [
     { href: '/admin/products', label: 'Produits', icon: Package },
     { href: '/admin/orders', label: 'Commandes', icon: ShoppingBag },
     { href: '/admin/customers', label: 'Clients', icon: Users },
+    { href: '/admin/settings', label: 'Paramètres', icon: Settings },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

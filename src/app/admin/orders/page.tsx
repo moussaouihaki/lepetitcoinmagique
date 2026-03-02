@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { ShoppingBag, Search, ChevronDown } from 'lucide-react';
+import { ShoppingBag, Search, ChevronDown, Eye } from 'lucide-react';
+import Link from 'next/link';
 
 interface Order {
     id: string; customerName: string; customerEmail: string;
@@ -92,7 +93,7 @@ export default function AdminOrdersPage() {
                             <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Date</th>
                             <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Statut</th>
                             <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Total</th>
-                            <th className="text-right p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Changer statut</th>
+                            <th className="text-right p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
@@ -124,12 +125,19 @@ export default function AdminOrdersPage() {
                                         <span className="font-architects font-bold text-[#b38b59] text-sm">{(order.total || 0).toFixed(2)} CHF</span>
                                     </td>
                                     <td className="p-5 text-right">
-                                        <div className="relative inline-block">
-                                            <select value={order.status || 'pending'} onChange={e => updateStatus(order.id, e.target.value)}
-                                                className="appearance-none bg-gray-50 border border-gray-200 rounded-lg pl-3 pr-8 py-1.5 text-gray-700 text-sm focus:outline-none focus:border-[#b38b59]/60 font-architects cursor-pointer">
-                                                {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                                            </select>
-                                            <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                        <div className="flex items-center gap-2 justify-end">
+                                            <Link href={`/admin/orders/${order.id}`}>
+                                                <button className="flex items-center gap-1.5 px-3 py-1.5 bg-[#4a2128]/5 hover:bg-[#4a2128]/10 text-[#4a2128] rounded-lg font-architects text-xs transition-colors">
+                                                    <Eye size={13} /> Voir
+                                                </button>
+                                            </Link>
+                                            <div className="relative inline-block">
+                                                <select value={order.status || 'pending'} onChange={e => updateStatus(order.id, e.target.value)}
+                                                    className="appearance-none bg-gray-50 border border-gray-200 rounded-lg pl-3 pr-8 py-1.5 text-gray-700 text-sm focus:outline-none focus:border-[#b38b59]/60 font-architects cursor-pointer">
+                                                    {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                                                </select>
+                                                <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>

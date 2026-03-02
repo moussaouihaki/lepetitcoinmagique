@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCartStore } from '@/store/cart';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { ShoppingBag, ChevronRight, Truck, Shield, CreditCard, Check, Loader2, AlertTriangle } from 'lucide-react';
+import { ShoppingBag, ChevronRight, Truck, Shield, CreditCard, Check, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 type Step = 'cart' | 'shipping';
@@ -16,6 +16,9 @@ export default function CheckoutPage() {
     const router = useRouter();
     const [step, setStep] = useState<Step>('cart');
     const [loading, setLoading] = useState(false);
+    const [stripeError, setStripeError] = useState('');
+    const [shippingCost, setShippingCost] = useState<number>(0);
+    const [loadingShipping, setLoadingShipping] = useState(true);
 
     const [form, setForm] = useState({
         firstName: '', lastName: '', email: '', phone: '',
@@ -23,16 +26,40 @@ export default function CheckoutPage() {
         notes: '',
     });
 
+    // Fetch shipping cost from Firebase settings
+    useEffect(() => {
+        const fetchShipping = async () => {
+            try {
+                const snap = await getDoc(doc(db, 'settings', 'shop'));
+                if (snap.exists()) {
+                    setShippingCost(snap.data().shippingCost ?? 11);
+                } else {
+                    setShippingCost(11); // default
+                }
+            } catch {
+                setShippingCost(11);
+            } finally {
+                setLoadingShipping(false);
+            }
+        };
+        fetchShipping();
+    }, []);
+
+    const grandTotal = totalPrice + shippingCost;
+
     const handleOrder = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        setStripeError('');
         try {
-            // 1. Save order to Firebase first
+            // 1. Save order to Firebase
             const orderRef = await addDoc(collection(db, 'orders'), {
                 customerName: `${form.firstName} ${form.lastName}`,
                 customerEmail: form.email,
                 customerPhone: form.phone,
-                total: totalPrice,
+                total: grandTotal,
+                shippingCost: shippingCost,
+                subtotal: totalPrice,
                 status: 'pending',
                 shippingAddress: {
                     address: form.address,
@@ -52,7 +79,7 @@ export default function CheckoutPage() {
                 createdAt: serverTimestamp(),
             });
 
-            // 2. Redirect to Stripe Checkout
+            // 2. Call Stripe API
             const res = await fetch('/api/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -65,23 +92,26 @@ export default function CheckoutPage() {
                     })),
                     orderId: orderRef.id,
                     customerEmail: form.email,
+                    shippingCost: shippingCost,
                 }),
             });
 
             const data = await res.json();
 
+            if (data.error) {
+                // Show Stripe error, don't simulate success
+                setStripeError(`Erreur Stripe : ${data.error}`);
+                setLoading(false);
+                return;
+            }
+
             if (data.url) {
-                // Stripe hosted checkout
                 clearCart();
                 window.location.href = data.url;
-            } else {
-                // Test mode: no real Stripe key, simulate success
-                clearCart();
-                router.push(`/checkout/success?orderId=${orderRef.id}`);
             }
-        } catch (e) {
+        } catch (e: any) {
+            setStripeError('Une erreur est survenue. Veuillez réessayer.');
             console.error(e);
-            alert('Une erreur est survenue. Veuillez réessayer.');
         } finally {
             setLoading(false);
         }
@@ -106,20 +136,12 @@ export default function CheckoutPage() {
         <div className="min-h-screen bg-[#fdfaf6] pt-32 pb-20">
             <div className="container mx-auto px-6 max-w-[1200px]">
 
-                {/* Test mode banner */}
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-8 flex items-center gap-3">
-                    <AlertTriangle size={18} className="text-amber-500 flex-shrink-0" />
-                    <p className="font-architects text-amber-700 text-sm">
-                        <strong>Mode test Stripe</strong> — Les paiements ne sont pas réels. Utilisez la carte test <strong>4242 4242 4242 4242</strong> avec n'importe quelle date et CVC.
-                    </p>
-                </div>
-
                 {/* Steps */}
                 <div className="flex items-center justify-center gap-4 mb-12">
                     {(['cart', 'shipping'] as const).map((s, i) => (
                         <div key={s} className="flex items-center gap-4">
-                            <div className={`flex items-center gap-2 ${step === s ? 'text-[#4a2128]' : (s === 'cart' && step === 'shipping') ? 'text-[#b38b59]' : 'text-gray-400'}`}>
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center border font-cinzel text-sm ${step === s ? 'border-[#4a2128] bg-[#4a2128] text-white' : 'border-gray-300 text-gray-400'}`}>
+                            <div className={`flex items-center gap-2 ${step === s ? 'text-[#4a2128]' : 'text-[#b38b59]'}`}>
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center border font-cinzel text-sm ${step === s ? 'border-[#4a2128] bg-[#4a2128] text-white' : 'border-[#b38b59] text-[#b38b59]'}`}>
                                     {(s === 'cart' && step === 'shipping') ? <Check size={14} /> : i + 1}
                                 </div>
                                 <span className="font-cinzel text-sm uppercase tracking-widest hidden sm:block">
@@ -156,6 +178,19 @@ export default function CheckoutPage() {
                                         </div>
                                     ))}
                                 </div>
+                                <div className="p-6 border-t border-gray-100 bg-gray-50/50 space-y-2">
+                                    <div className="flex justify-between font-architects text-sm text-gray-600">
+                                        <span>Sous-total</span><span>{totalPrice.toFixed(2)} CHF</span>
+                                    </div>
+                                    <div className="flex justify-between font-architects text-sm text-gray-600">
+                                        <span>Frais de port</span>
+                                        <span>{loadingShipping ? '...' : `${shippingCost.toFixed(2)} CHF`}</span>
+                                    </div>
+                                    <div className="flex justify-between font-cinzel text-[#4a2128] text-base border-t border-gray-200 pt-2">
+                                        <span>Total</span>
+                                        <span className="text-[#b38b59] font-bold">{grandTotal.toFixed(2)} CHF</span>
+                                    </div>
+                                </div>
                                 <div className="p-6">
                                     <button onClick={() => setStep('shipping')} className="w-full bg-[#4a2128] text-white font-cinzel tracking-widest py-4 rounded-xl uppercase hover:bg-[#b38b59] transition-colors flex items-center justify-center gap-2">
                                         Continuer <ChevronRight size={18} />
@@ -166,93 +201,62 @@ export default function CheckoutPage() {
 
                         {step === 'shipping' && (
                             <form onSubmit={handleOrder} className="space-y-6">
-                                {/* Shipping info */}
+                                {stripeError && (
+                                    <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl p-4 font-architects text-sm">
+                                        ⚠ {stripeError}
+                                    </div>
+                                )}
+
                                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
                                     <h2 className="font-cinzel text-xl text-[#4a2128] uppercase tracking-widest mb-6 flex items-center gap-2">
                                         <Truck size={20} /> Informations de livraison
                                     </h2>
                                     <div className="grid grid-cols-2 gap-4 mb-4">
-                                        <div>
-                                            <label className="block text-gray-600 text-sm font-architects mb-1">Prénom *</label>
-                                            <input required type="text" value={form.firstName} onChange={e => setForm({ ...form, firstName: e.target.value })} className={inputClass} />
-                                        </div>
-                                        <div>
-                                            <label className="block text-gray-600 text-sm font-architects mb-1">Nom *</label>
-                                            <input required type="text" value={form.lastName} onChange={e => setForm({ ...form, lastName: e.target.value })} className={inputClass} />
-                                        </div>
+                                        <div><label className="block text-gray-600 text-sm font-architects mb-1">Prénom *</label><input required type="text" value={form.firstName} onChange={e => setForm({ ...form, firstName: e.target.value })} className={inputClass} /></div>
+                                        <div><label className="block text-gray-600 text-sm font-architects mb-1">Nom *</label><input required type="text" value={form.lastName} onChange={e => setForm({ ...form, lastName: e.target.value })} className={inputClass} /></div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-4 mb-4">
-                                        <div>
-                                            <label className="block text-gray-600 text-sm font-architects mb-1">Email *</label>
-                                            <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={inputClass} />
-                                        </div>
-                                        <div>
-                                            <label className="block text-gray-600 text-sm font-architects mb-1">Téléphone</label>
-                                            <input type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className={inputClass} />
-                                        </div>
+                                        <div><label className="block text-gray-600 text-sm font-architects mb-1">Email *</label><input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className={inputClass} /></div>
+                                        <div><label className="block text-gray-600 text-sm font-architects mb-1">Téléphone</label><input type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className={inputClass} /></div>
                                     </div>
-                                    <div className="mb-4">
-                                        <label className="block text-gray-600 text-sm font-architects mb-1">Adresse *</label>
-                                        <input required type="text" value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} className={inputClass} />
-                                    </div>
+                                    <div className="mb-4"><label className="block text-gray-600 text-sm font-architects mb-1">Adresse *</label><input required type="text" value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} className={inputClass} /></div>
                                     <div className="grid grid-cols-3 gap-4 mb-4">
-                                        <div>
-                                            <label className="block text-gray-600 text-sm font-architects mb-1">NPA *</label>
-                                            <input required type="text" value={form.zip} onChange={e => setForm({ ...form, zip: e.target.value })} className={inputClass} />
-                                        </div>
-                                        <div className="col-span-2">
-                                            <label className="block text-gray-600 text-sm font-architects mb-1">Ville *</label>
-                                            <input required type="text" value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} className={inputClass} />
-                                        </div>
+                                        <div><label className="block text-gray-600 text-sm font-architects mb-1">NPA *</label><input required type="text" value={form.zip} onChange={e => setForm({ ...form, zip: e.target.value })} className={inputClass} /></div>
+                                        <div className="col-span-2"><label className="block text-gray-600 text-sm font-architects mb-1">Ville *</label><input required type="text" value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} className={inputClass} /></div>
                                     </div>
-                                    <div>
-                                        <label className="block text-gray-600 text-sm font-architects mb-1">Notes (optionnel)</label>
-                                        <textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} rows={2} placeholder="Instructions de livraison..." className={`${inputClass} resize-none`} />
-                                    </div>
+                                    <div><label className="block text-gray-600 text-sm font-architects mb-1">Notes</label><textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} rows={2} placeholder="Instructions de livraison..." className={`${inputClass} resize-none`} /></div>
                                 </div>
 
-                                {/* Payment - Stripe only */}
                                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                                    <h2 className="font-cinzel text-xl text-[#4a2128] uppercase tracking-widest mb-6 flex items-center gap-2">
+                                    <h2 className="font-cinzel text-xl text-[#4a2128] uppercase tracking-widest mb-4 flex items-center gap-2">
                                         <CreditCard size={20} /> Paiement sécurisé
                                     </h2>
-
-                                    <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 flex items-center gap-4 mb-4">
+                                    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 flex items-center gap-4">
                                         <div className="w-10 h-10 bg-[#635bff] rounded-lg flex items-center justify-center flex-shrink-0">
                                             <CreditCard size={20} className="text-white" />
                                         </div>
                                         <div>
-                                            <p className="font-architects text-gray-800 font-medium text-sm">Stripe — Paiement par carte bancaire</p>
-                                            <p className="font-architects text-gray-500 text-xs mt-0.5">Visa, Mastercard, American Express · Crypté SSL</p>
+                                            <p className="font-architects text-gray-800 font-medium text-sm">Stripe — Carte bancaire</p>
+                                            <p className="font-architects text-gray-500 text-xs">Visa, Mastercard, Amex · SSL</p>
                                         </div>
-                                        <div className="ml-auto flex items-center gap-1">
-                                            {['VISA', 'MC', 'AMEX'].map(c => (
-                                                <span key={c} className="bg-white border border-gray-200 rounded px-2 py-0.5 text-gray-600 font-bold text-[10px]">{c}</span>
-                                            ))}
+                                        <div className="ml-auto flex gap-1">
+                                            {['VISA', 'MC', 'AMEX'].map(c => <span key={c} className="bg-white border border-gray-200 rounded px-1.5 py-0.5 text-[10px] font-bold text-gray-600">{c}</span>)}
                                         </div>
                                     </div>
-
-                                    <p className="font-architects text-gray-400 text-xs text-center">
-                                        Vous serez redirigé vers la page de paiement sécurisée Stripe après validation
-                                    </p>
+                                    <p className="font-architects text-gray-400 text-xs text-center mt-3">Vous serez redirigé vers la page Stripe sécurisée</p>
                                 </div>
 
                                 <div className="flex gap-4">
-                                    <button type="button" onClick={() => setStep('cart')} className="flex-1 bg-gray-100 text-gray-700 font-cinzel tracking-widest py-4 rounded-xl uppercase hover:bg-gray-200 transition-colors">
-                                        Retour
-                                    </button>
+                                    <button type="button" onClick={() => setStep('cart')} className="flex-1 bg-gray-100 text-gray-700 font-cinzel tracking-widest py-4 rounded-xl uppercase hover:bg-gray-200 transition-colors">Retour</button>
                                     <button type="submit" disabled={loading} className="flex-[2] bg-[#4a2128] text-white font-cinzel tracking-widest py-4 rounded-xl uppercase hover:bg-[#b38b59] transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
-                                        {loading
-                                            ? <><Loader2 size={18} className="animate-spin" /> Traitement...</>
-                                            : `Payer · ${totalPrice.toFixed(2)} CHF`
-                                        }
+                                        {loading ? <><Loader2 size={18} className="animate-spin" /> Redirection vers Stripe...</> : `Payer · ${grandTotal.toFixed(2)} CHF`}
                                     </button>
                                 </div>
                             </form>
                         )}
                     </div>
 
-                    {/* Right: Summary */}
+                    {/* Summary */}
                     <div className="lg:col-span-1">
                         <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm sticky top-36">
                             <h3 className="font-cinzel text-lg text-[#4a2128] uppercase tracking-widest mb-6">Récapitulatif</h3>
@@ -269,15 +273,14 @@ export default function CheckoutPage() {
                             </div>
                             <div className="border-t border-gray-100 pt-4 space-y-2">
                                 <div className="flex justify-between"><span className="font-architects text-gray-500 text-sm">Sous-total</span><span className="font-architects text-gray-700 text-sm">{totalPrice.toFixed(2)} CHF</span></div>
-                                <div className="flex justify-between"><span className="font-architects text-gray-500 text-sm">Livraison</span><span className="font-architects text-green-600 text-sm">À définir</span></div>
+                                <div className="flex justify-between"><span className="font-architects text-gray-500 text-sm">Frais de port</span><span className="font-architects text-gray-700 text-sm">{loadingShipping ? '...' : `${shippingCost.toFixed(2)} CHF`}</span></div>
                                 <div className="flex justify-between border-t border-gray-100 pt-2 mt-2">
                                     <span className="font-cinzel text-[#4a2128] text-base">Total</span>
-                                    <span className="font-cinzel text-[#b38b59] text-xl font-bold">{totalPrice.toFixed(2)} CHF</span>
+                                    <span className="font-cinzel text-[#b38b59] text-xl font-bold">{grandTotal.toFixed(2)} CHF</span>
                                 </div>
                             </div>
                             <div className="mt-6 flex items-center gap-2 text-gray-400 text-xs font-architects">
-                                <Shield size={14} />
-                                <span>Paiement 100% sécurisé par Stripe</span>
+                                <Shield size={14} /><span>Paiement sécurisé par Stripe</span>
                             </div>
                         </div>
                     </div>

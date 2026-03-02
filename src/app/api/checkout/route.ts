@@ -6,13 +6,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 });
 
 export async function POST(req: Request) {
-    try {
-        if (!process.env.STRIPE_SECRET_KEY) {
-            // No key configured: simulate success (redirect to success page)
-            return NextResponse.json({ url: null });
-        }
+    if (!process.env.STRIPE_SECRET_KEY) {
+        return NextResponse.json({ error: 'Stripe non configuré' }, { status: 500 });
+    }
 
-        const { items, orderId, customerEmail } = await req.json();
+    try {
+        const { items, orderId, customerEmail, shippingCost } = await req.json();
         const origin = req.headers.get('origin') || 'https://le-petit-coin-magique.vercel.app';
 
         const lineItems = items.map((item: any) => ({
@@ -26,6 +25,18 @@ export async function POST(req: Request) {
             },
             quantity: item.quantity,
         }));
+
+        // Add shipping as a line item if > 0
+        if (shippingCost && shippingCost > 0) {
+            lineItems.push({
+                price_data: {
+                    currency: 'chf',
+                    product_data: { name: 'Frais de port' },
+                    unit_amount: Math.round(shippingCost * 100),
+                },
+                quantity: 1,
+            });
+        }
 
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
