@@ -53,6 +53,12 @@ export default function AdminProductsPage() {
         const matchCat = filterCategory === 'Toutes les catégories' ||
             p.category.toUpperCase() === filterCategory.toUpperCase();
         return matchSearch && matchCat;
+    }).sort((a, b) => {
+        // First sort by category
+        const catCompare = a.category.localeCompare(b.category);
+        if (catCompare !== 0) return catCompare;
+        // Then sort by name
+        return a.name.localeCompare(b.name);
     });
 
     // Unique categories from real data
@@ -150,7 +156,7 @@ export default function AdminProductsPage() {
                                             </div>
                                         </td>
                                         <td className="p-5">
-                                            <span className="bg-[#4a2128]/5 text-[#4a2128] border border-[#4a2128]/10 px-2.5 py-1 rounded-full text-xs font-architects font-medium">
+                                            <span className="bg-[#4a2128]/5 text-[#4a2128] border border-[#4a2128]/10 px-2.5 py-1 rounded-full text-xs font-architects font-medium whitespace-nowrap">
                                                 {product.category}
                                             </span>
                                         </td>
@@ -159,7 +165,7 @@ export default function AdminProductsPage() {
                                         </td>
                                         <td className="p-5">
                                             {product.stock !== undefined ? (
-                                                <span className={`px-2.5 py-1 rounded-full text-xs font-architects font-medium ${product.stock === 0 ? 'bg-red-100 text-red-600' :
+                                                <span className={`px-2.5 py-1 rounded-full text-xs font-architects font-medium whitespace-nowrap ${product.stock === 0 ? 'bg-red-100 text-red-600' :
                                                     product.stock <= 3 ? 'bg-orange-100 text-orange-700' :
                                                         'bg-gray-100 text-gray-700'
                                                     }`}>
@@ -168,7 +174,7 @@ export default function AdminProductsPage() {
                                             ) : <span className="text-gray-400 text-xs">—</span>}
                                         </td>
                                         <td className="p-5">
-                                            <span className={`px-2.5 py-1 rounded-full text-xs font-architects font-medium ${(product.stock !== undefined && product.stock === 0) ? 'bg-red-100 text-red-600' :
+                                            <span className={`px-2.5 py-1 rounded-full text-xs font-architects font-medium whitespace-nowrap ${(product.stock !== undefined && product.stock === 0) ? 'bg-red-100 text-red-600' :
                                                 product.is_available !== false ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
                                                 }`}>
                                                 {(product.stock !== undefined && product.stock === 0) ? 'Rupture' : product.is_available !== false ? 'En ligne' : 'Masqué'}

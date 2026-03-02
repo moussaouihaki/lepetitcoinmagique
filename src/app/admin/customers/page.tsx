@@ -82,7 +82,7 @@ export default function AdminCustomersPage() {
                                 filtered.map((customer) => (
                                     <tr key={customer.id} className="hover:bg-gray-50/50 transition-colors">
                                         <td className="p-5">
-                                            <div className="flex items-center gap-3">
+                                            <div className="flex items-center gap-3 min-w-[150px]">
                                                 <div className="w-9 h-9 rounded-full bg-[#4a2128]/10 border border-[#4a2128]/10 flex items-center justify-center text-[#4a2128] text-sm font-bold flex-shrink-0">
                                                     {customer.name.charAt(0).toUpperCase()}
                                                 </div>
