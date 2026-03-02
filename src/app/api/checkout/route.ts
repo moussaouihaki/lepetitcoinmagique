@@ -1,15 +1,19 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-    apiVersion: '2026-02-25.clover',
-    httpClient: Stripe.createFetchHttpClient(),
-});
+// Define Stripe conditionally to avoid build-time errors when the key is not present
+let stripe: Stripe;
+if (process.env.STRIPE_SECRET_KEY) {
+    stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+        apiVersion: '2026-02-25.clover' as any,
+        httpClient: Stripe.createFetchHttpClient(),
+    });
+}
 
 export async function POST(req: Request) {
     console.log("Stripe Key exists:", !!process.env.STRIPE_SECRET_KEY, "Length:", process.env.STRIPE_SECRET_KEY?.length);
 
-    if (!process.env.STRIPE_SECRET_KEY) {
+    if (!process.env.STRIPE_SECRET_KEY || !stripe) {
         return NextResponse.json({ error: 'Stripe non configuré (Clé secrète introuvable sur le serveur)' }, { status: 500 });
     }
 
