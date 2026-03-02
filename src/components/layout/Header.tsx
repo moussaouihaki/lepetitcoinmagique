@@ -22,6 +22,7 @@ export default function Header() {
     const { totalItems } = useCartStore();
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [mobileBoutiqueOpen, setMobileBoutiqueOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -149,23 +150,47 @@ export default function Header() {
                             <div className="flex flex-col gap-8 text-center items-center">
                                 <Link href="/" onClick={() => setMobileMenuOpen(false)} className="font-cinzel text-2xl tracking-widest uppercase text-[#4a2128]">Accueil</Link>
 
-                                <span className="font-architects text-[#b38b59] text-xl">Boutique</span>
-                                {categories.map((cat, i) => (
-                                    <motion.div
-                                        key={cat}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: i * 0.05 }}
+                                {/* Boutique accordion */}
+                                <div className="w-full flex flex-col items-center">
+                                    <button
+                                        onClick={() => setMobileBoutiqueOpen(!mobileBoutiqueOpen)}
+                                        className="flex items-center gap-3 font-cinzel text-2xl tracking-widest uppercase text-[#4a2128]"
                                     >
-                                        <Link
-                                            href={`/category/${encodeURIComponent(cat.toLowerCase())}`}
-                                            onClick={() => setMobileMenuOpen(false)}
-                                            className="font-cinzel text-xl tracking-widest uppercase text-gray-700 hover:text-[#4a2128]"
-                                        >
-                                            {cat}
-                                        </Link>
-                                    </motion.div>
-                                ))}
+                                        Boutique
+                                        <ChevronDown size={20} className={`transition-transform duration-300 ${mobileBoutiqueOpen ? 'rotate-180' : ''}`} />
+                                    </button>
+
+                                    <AnimatePresence>
+                                        {mobileBoutiqueOpen && (
+                                            <motion.div
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: 'auto', opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                                className="overflow-hidden w-full"
+                                            >
+                                                <div className="flex flex-col gap-5 pt-5 items-center">
+                                                    {categories.map((cat, i) => (
+                                                        <motion.div
+                                                            key={cat}
+                                                            initial={{ opacity: 0, x: -10 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ delay: i * 0.04 }}
+                                                        >
+                                                            <Link
+                                                                href={`/category/${encodeURIComponent(cat.toLowerCase())}`}
+                                                                onClick={() => { setMobileMenuOpen(false); setMobileBoutiqueOpen(false); }}
+                                                                className="font-cinzel text-lg tracking-widest uppercase text-gray-600 hover:text-[#4a2128] transition-colors"
+                                                            >
+                                                                {cat}
+                                                            </Link>
+                                                        </motion.div>
+                                                    ))}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
 
                                 <div className="h-[1px] w-24 bg-[#b38b59]/40 my-2" />
 
