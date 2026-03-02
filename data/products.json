@@ -123,7 +123,7 @@
     "id": "16",
     "name": "collier bois de cerf et cristal de roche",
     "price": 35,
-    "description": "Le bois de cerf symbolise la capacité de se régénérer. Gebo signifie l'harmonie entre donner et recevoir.",
+    "description": "Symbolise la régénération. Le Cristal de Roche permet de canaliser les énergies.",
     "category": "BIJOUX",
     "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250514155404-1-high.jpg"
   },
@@ -131,88 +131,112 @@
     "id": "17",
     "name": "Collier bois de cerf et Cristal de Roche",
     "price": 25,
-    "description": "Fehu apporte une impulsion dans le domaine matériel et l’évolution vers de plus grandes richesses.",
+    "description": "Fehu apporte une impulsion dans le domaine matériel.",
     "category": "BIJOUX",
     "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250514155438-1-high.jpg"
   },
   {
     "id": "18",
-    "name": "Collier bois de cerf et Tourmaline",
-    "price": 25,
-    "description": "La pierre tourmaline apporte harmonie et équilibre dans la vie.",
-    "category": "BIJOUX",
-    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250522143408-1-high.jpg"
-  },
-  {
-    "id": "19",
-    "name": "Collier Bois de cerf",
-    "price": 25,
-    "description": "Le bois de cerf, qui tombe chaque année, symbolise la capacité de se régénérer.",
-    "category": "BIJOUX",
-    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250522143606-1-high.jpg"
-  },
-  {
-    "id": "20",
-    "name": "Bracelet collection Soleil couchant",
+    "name": "Bracelet collection Soleil couchant 1",
     "price": 45,
     "description": "réglable",
     "category": "BIJOUX",
     "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250514164459-1-high-7j6d7a.jpg"
   },
   {
-    "id": "21",
-    "name": "Bracelet collection grain de sable",
+    "id": "19",
+    "name": "Bracelet collection Soleil couchant 2",
+    "price": 40,
+    "description": "réglable",
+    "category": "BIJOUX",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250515143719-1-high.jpg"
+  },
+  {
+    "id": "20",
+    "name": "Bracelet collection grain de sable 1",
     "price": 40,
     "description": "réglable",
     "category": "BIJOUX",
     "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250514155630-1-high-ufugh7.jpg"
   },
   {
+    "id": "21",
+    "name": "Bracelet collection comme un rêve 1",
+    "price": 40,
+    "description": "réglable",
+    "category": "BIJOUX",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250514160235-1-high.jpg"
+  },
+  {
     "id": "22",
+    "name": "Bracelet collection doux rêve 1",
+    "price": 30,
+    "description": "réglable",
+    "category": "BIJOUX",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250515150046-1-high.jpg"
+  },
+  {
+    "id": "23",
+    "name": "Bracelet collection forêt enchantée 1",
+    "price": 20,
+    "description": "réglable",
+    "category": "BIJOUX",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250514160148-1-high.jpg"
+  },
+  {
+    "id": "24",
     "name": "Laisse Noeud Marin (petit chien)",
     "price": 38,
-    "description": "Laisse pour petit chien jusqu'à 10kg, max 163cm réglabe sur 3 longueurs. Symbole de l'amour éternel.",
+    "description": "Laisse pour petit chien jusqu'à 10kg. Symbole de l'amour éternel.",
     "category": "LES POILUS",
     "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img_20250226_191026-high.jpg"
   },
   {
-    "id": "23",
+    "id": "25",
     "name": "Laisse Triquetra (petit chien)",
     "price": 38,
-    "description": "Le triquetra est associé à la déesse Brigid, pour favoriser la guérison et la protection.",
+    "description": "Laisse pour petit chien jusqu'à 10kg. Symbole de protection.",
     "category": "LES POILUS",
     "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img_20250226_190832-high.jpg"
   },
   {
-    "id": "24",
+    "id": "26",
     "name": "Laisse fleur de vie (petit chien)",
     "price": 38,
-    "description": "La Fleur de Vie est un symbole sacré qui représente l'harmonie et l'équilibre.",
+    "description": "La Fleur de Vie représente l'harmonie et l'équilibre.",
     "category": "LES POILUS",
     "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250516164913-1-high.jpg"
   },
   {
-    "id": "25",
-    "name": "Le Bâton du Druide du Nord",
-    "price": 175,
-    "description": "Bâton rituel en bois sculpté et gravé à la main.",
-    "category": "CURIOSITÉ",
-    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250516171725-1-high.jpg"
+    "id": "27",
+    "name": "Laisse witchy (chien moyen)",
+    "price": 42,
+    "description": "Laisse 165cm max réglable.",
+    "category": "LES POILUS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img_20250507_182421-1-high.jpg"
   },
   {
-    "id": "26",
+    "id": "28",
     "name": "Laisse Le triskel du corbeau (chien moyen)",
     "price": 42,
-    "description": "Laisse max 165cm réglable sur 3 longueurs. Le Triskel représente la trinité et la renaissance.",
+    "description": "Laisse max 165cm réglable. Le Triskel représente la renaissance.",
     "category": "LES POILUS",
     "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250516163210-1-high.jpg"
   },
   {
-    "id": "27",
+    "id": "29",
     "name": "Laisse noeud de sorcière (chien moyen)",
     "price": 45,
-    "description": "Le nœud de sorcière est un symbole puissant de protection et de connexion spirituelle.",
+    "description": "Le nœud de sorcière est un symbole puissant de protection.",
     "category": "LES POILUS",
     "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250611160510-1-high.jpg"
+  },
+  {
+    "id": "30",
+    "name": "Le Bâton du Druide du Nord",
+    "price": 175,
+    "description": "Bâton rituel en bois sculpté et gravé à la main.",
+    "category": "CURIOSITÉS",
+    "image": "https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/img20250516171725-1-high.jpg"
   }
 ]
