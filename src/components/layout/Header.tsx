@@ -61,7 +61,7 @@ export default function Header() {
                             {/* Boutique Dropdown */}
                             <div className="relative group/boutique">
                                 <button className="font-cinzel text-xl tracking-widest text-gray-700 group-hover/boutique:text-[#b38b59] transition-colors uppercase flex items-center gap-2 pb-6 -mb-6">
-                                    Curiosités
+                                    Boutique
                                     <ChevronDown size={16} className="transition-transform duration-500 group-hover/boutique:rotate-180" />
                                 </button>
 
@@ -142,7 +142,7 @@ export default function Header() {
                             <div className="flex flex-col gap-8 text-center items-center">
                                 <Link href="/" onClick={() => setMobileMenuOpen(false)} className="font-cinzel text-2xl tracking-widest uppercase text-[#4a2128]">Accueil</Link>
 
-                                <span className="font-architects text-[#b38b59] text-xl">Curiosités</span>
+                                <span className="font-architects text-[#b38b59] text-xl">Boutique</span>
                                 {categories.map((cat, i) => (
                                     <motion.div
                                         key={cat}
