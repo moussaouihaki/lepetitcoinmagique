@@ -31,11 +31,11 @@ export default function Footer() {
                     </ul>
                 </div>
             </div>
-            <div className="flex flex-col md:flex-row justify-between items-center mt-12 opacity-50 text-xs font-architects">
-                <p>
+            <div className="container mx-auto px-4 flex flex-col items-center mt-12 opacity-50 text-xs font-architects space-y-2">
+                <p className="text-center">
                     © {new Date().getFullYear()} Le Petit Coin Magique. Tous droits réservés.
                 </p>
-                <Link href="/admin" className="mt-4 md:mt-0 opacity-40 hover:opacity-100 transition duration-300">
+                <Link href="/admin" className="opacity-20 hover:opacity-100 transition duration-300">
                     Grimoire
                 </Link>
             </div>
