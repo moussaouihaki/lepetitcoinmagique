@@ -1,120 +1,153 @@
 'use client';
 
 import { useCartStore } from '@/store/cart';
-import { Trash2, ShoppingBag } from 'lucide-react';
+import { Trash2, ShoppingBag, Plus, Minus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function CartPage() {
     const { items, removeItem, updateQuantity, totalPrice } = useCartStore();
-    const [loading, setLoading] = useState(false);
-
-    const handleCheckout = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch('/api/checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items }),
-            });
-            const data = await response.json();
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                alert('Erreur: Configurez vos clés Stripe pour activer le paiement en ligne.');
-            }
-        } catch (e) {
-            alert("Une erreur est survenue lors du passage à la caisse.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    const router = useRouter();
 
     if (items.length === 0) {
         return (
-            <div className="container mx-auto px-4 py-16 max-w-4xl text-center font-architects">
-                <ShoppingCartIcon size={64} className="mx-auto text-gray-300 mb-6" />
-                <h1 className="font-cinzel text-4xl text-gray-800 mb-4 text-[#92544e]">Votre chaudron est vide</h1>
-                <p className="text-gray-500 mb-8">Ajoutez quelques articles enchantés avant de passer votre commande.</p>
-                <Link href="/" className="bg-[#92544e] text-white px-8 py-3 rounded-full hover:bg-[#7a433e] transition font-bold shadow-md">
-                    Explorer la boutique
+            <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 text-center">
+                <ShoppingBag size={64} className="text-gray-200 mb-6" />
+                <h1 className="font-cinzel text-4xl text-[#4a2128] uppercase tracking-widest mb-4">Panier Vide</h1>
+                <p className="font-architects text-gray-500 text-xl mb-10">Votre grimoire n'a pas encore été ensemencé.</p>
+                <Link href="/curiosites">
+                    <button className="bg-[#4a2128] text-white font-cinzel tracking-widest py-4 px-10 uppercase hover:bg-[#b38b59] transition-colors">
+                        Découvrir la Boutique
+                    </button>
                 </Link>
             </div>
         );
     }
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-5xl font-architects">
-            <h1 className="font-cinzel text-5xl mb-8 border-b pb-4 text-[#92544e]">Votre Panier</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div className="lg:col-span-2 space-y-6">
-                    {items.map((item) => (
-                        <div key={item.id} className="flex gap-4 border border-gray-100 p-4 rounded bg-white shadow-sm items-center">
-                            <div className="relative w-24 h-24 rounded overflow-hidden shrink-0">
-                                <Image src={item.image} alt={item.name} fill className="object-cover" />
-                            </div>
-                            <div className="flex-1">
-                                <h3 className="font-bold text-xl">{item.name}</h3>
-                                <p className="text-sm text-gray-500">{item.price.toFixed(2)} CHF</p>
-                                <div className="flex items-center gap-4 mt-2">
-                                    <div className="flex items-center border rounded">
-                                        <button className="px-3 py-1 bg-gray-50 hover:bg-gray-100" onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}>-</button>
-                                        <span className="px-3 py-1 border-x font-mono">{item.quantity}</span>
-                                        <button className="px-3 py-1 bg-gray-50 hover:bg-gray-100" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
-                                    </div>
-                                    <button onClick={() => removeItem(item.id)} className="text-red-500 hover:text-red-700 p-2 ml-auto" title="Supprimer">
-                                        <Trash2 size={20} />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+        <div className="bg-[#fdfaf6] min-h-screen pb-20">
+            <div className="container mx-auto px-6 max-w-[1100px]">
+                <div className="py-12 border-b border-gray-100 mb-10">
+                    <h1 className="font-cinzel text-4xl md:text-5xl text-[#4a2128] uppercase tracking-widest">Mon Panier</h1>
+                    <p className="font-architects text-gray-500 mt-2">{items.length} article{items.length > 1 ? 's' : ''}</p>
                 </div>
 
-                <div className="bg-white p-6 rounded-xl border border-[#92544e]/20 shadow-md h-fit top-24 sticky">
-                    <h2 className="font-bold text-xl mb-4 text-center border-b pb-4 border-gray-100 flex items-center justify-center gap-2">
-                        <ShoppingBag size={20} />
-                        Résumé de la commande
-                    </h2>
-                    <div className="space-y-3 mb-6">
-                        <div className="flex justify-between">
-                            <span className="text-gray-600">Sous-total</span>
-                            <span className="font-mono">{totalPrice.toFixed(2)} CHF</span>
-                        </div>
-                        <div className="flex justify-between">
-                            <span className="text-gray-600">Livraison (Magasin)</span>
-                            <span className="font-mono">Gratuit</span>
-                        </div>
-                    </div>
-                    <div className="flex justify-between items-center border-t border-gray-200 pt-4 mb-8">
-                        <span className="font-bold text-xl text-[#92544e]">Total</span>
-                        <span className="font-bold text-2xl tracking-wider font-mono">{totalPrice.toFixed(2)} CHF</span>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    {/* Items list */}
+                    <div className="lg:col-span-2 space-y-4">
+                        <AnimatePresence>
+                            {items.map((item) => (
+                                <motion.div
+                                    key={item.id}
+                                    layout
+                                    exit={{ opacity: 0, x: -30, height: 0 }}
+                                    className="bg-white border border-gray-100 rounded-2xl flex gap-4 p-4 shadow-sm"
+                                >
+                                    {/* Image */}
+                                    <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0 border border-gray-100">
+                                        {item.image && (
+                                            <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
+                                        )}
+                                    </div>
+
+                                    {/* Info */}
+                                    <div className="flex-1 min-w-0">
+                                        <p className="font-cinzel text-[#4a2128] text-sm uppercase tracking-wide">{item.name}</p>
+                                        <p className="font-architects text-gray-400 text-xs mt-0.5">{item.category}</p>
+
+                                        {/* Qty + delete */}
+                                        <div className="flex items-center justify-between mt-3">
+                                            <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
+                                                <button
+                                                    onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                                                    className="px-3 py-1.5 hover:bg-gray-50 transition-colors text-gray-600"
+                                                >
+                                                    <Minus size={14} />
+                                                </button>
+                                                <span className="px-3 py-1.5 font-architects text-sm font-bold border-x border-gray-200">
+                                                    {item.quantity}
+                                                </span>
+                                                <button
+                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                    className="px-3 py-1.5 hover:bg-gray-50 transition-colors text-gray-600"
+                                                >
+                                                    <Plus size={14} />
+                                                </button>
+                                            </div>
+                                            <button
+                                                onClick={() => removeItem(item.id)}
+                                                className="p-2 text-gray-300 hover:text-red-400 transition-colors"
+                                            >
+                                                <Trash2 size={18} />
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Price */}
+                                    <div className="flex-shrink-0 text-right">
+                                        <span className="font-architects font-bold text-[#b38b59] text-lg">
+                                            {(item.price * item.quantity).toFixed(2)} CHF
+                                        </span>
+                                        {item.quantity > 1 && (
+                                            <p className="text-gray-400 text-xs mt-0.5">{item.price.toFixed(2)} CHF / unité</p>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+
+                        <Link href="/curiosites" className="inline-flex items-center gap-2 text-[#b38b59] font-architects text-sm hover:underline mt-4">
+                            ← Continuer mes achats
+                        </Link>
                     </div>
 
-                    <button
-                        onClick={handleCheckout}
-                        disabled={loading}
-                        className="w-full bg-[#92544e] text-white py-4 rounded-xl font-bold hover:bg-[#7a433e] transition flex items-center justify-center gap-2 shadow-sm disabled:opacity-50"
-                    >
-                        {loading ? 'Redirection Stripe...' : 'Payer avec Stripe'}
-                    </button>
-                    <p className="text-center text-xs text-gray-400 mt-4 leading-relaxed">
-                        Paiement sécurisé via Stripe. <br /> En continuant, vous acceptez nos conditions de vente.
-                    </p>
+                    {/* Summary */}
+                    <div className="lg:col-span-1">
+                        <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm sticky top-36">
+                            <h2 className="font-cinzel text-xl text-[#4a2128] uppercase tracking-widest mb-6">Récapitulatif</h2>
+
+                            <div className="space-y-3 mb-6">
+                                {items.map(item => (
+                                    <div key={item.id} className="flex justify-between text-sm">
+                                        <span className="font-architects text-gray-600 truncate max-w-[150px]">{item.name} × {item.quantity}</span>
+                                        <span className="font-architects text-gray-700 font-bold flex-shrink-0">{(item.price * item.quantity).toFixed(2)} CHF</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="border-t border-gray-100 pt-4 space-y-2 mb-6">
+                                <div className="flex justify-between">
+                                    <span className="font-architects text-gray-500 text-sm">Sous-total</span>
+                                    <span className="font-architects text-gray-700 text-sm">{totalPrice.toFixed(2)} CHF</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="font-architects text-gray-500 text-sm">Livraison</span>
+                                    <span className="font-architects text-gray-500 text-sm">Calculée à l'étape suivante</span>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between border-t border-gray-100 pt-4 mb-6">
+                                <span className="font-cinzel text-[#4a2128] text-lg">Total</span>
+                                <span className="font-cinzel text-[#b38b59] text-2xl font-bold">{totalPrice.toFixed(2)} CHF</span>
+                            </div>
+
+                            {/* Checkout button — no login required */}
+                            <button
+                                onClick={() => router.push('/checkout')}
+                                className="w-full bg-[#4a2128] text-white font-cinzel tracking-widest py-4 rounded-xl uppercase hover:bg-[#b38b59] transition-all duration-300 text-sm"
+                            >
+                                Commander →
+                            </button>
+
+                            <p className="text-center font-architects text-gray-400 text-xs mt-4">
+                                ✓ Aucun compte requis · Paiement sécurisé
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    );
-}
-
-// Helper to render icon for empty cart
-function ShoppingCartIcon(props: any) {
-    return (
-        <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="8" cy="21" r="1" />
-            <circle cx="19" cy="21" r="1" />
-            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-        </svg>
     );
 }
