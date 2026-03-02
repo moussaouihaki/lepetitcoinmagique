@@ -5,7 +5,8 @@ import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Plus, Search, Pencil, Trash2, Package, ChevronDown } from 'lucide-react';
+import { Plus, Search, Pencil, Trash2, Package, ChevronDown, DownloadCloud } from 'lucide-react';
+import { addDoc } from 'firebase/firestore';
 
 interface Product {
     id: string; name: string; description: string; price: number;
@@ -24,6 +25,7 @@ export default function AdminProductsPage() {
     const [search, setSearch] = useState('');
     const [filterCategory, setFilterCategory] = useState('Toutes les catégories');
     const [deleting, setDeleting] = useState<string | null>(null);
+    const [importing, setImporting] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
@@ -45,6 +47,42 @@ export default function AdminProductsPage() {
             setProducts(prev => prev.filter(p => p.id !== id));
         } catch (e) { console.error(e); }
         finally { setDeleting(null); }
+    };
+
+    const handleImport = async () => {
+        if (!confirm("Voulez-vous importer tous les anciens produits depuis le site original ? Cela rajoutera les produits manquants.")) return;
+        setImporting(true);
+        try {
+            const res = await fetch('/data/products_full.json');
+            const newProducts = await res.json();
+
+            let count = 0;
+            for (const p of newProducts) {
+                // Check if product with exact same name already exists to avoid duplicates
+                const exists = products.some(existing => existing.name.trim().toLowerCase() === p.name.trim().toLowerCase());
+                if (!exists) {
+                    await addDoc(collection(db, 'products'), {
+                        name: p.name,
+                        description: p.description || '',
+                        price: p.price || 0,
+                        category: p.category || 'DIVERS',
+                        stock: p.stock || 1,
+                        image: p.image || '',
+                        is_available: p.is_available !== false,
+                        shippingCost: p.shippingCost || 7.5,
+                        createdAt: new Date().toISOString()
+                    });
+                    count++;
+                }
+            }
+            alert(`Importation réussie ! ${count} nouveaux produits ajoutés (les doublons ont été ignorés). Rechargez la page.`);
+            window.location.reload();
+        } catch (e: any) {
+            console.error(e);
+            alert("Erreur lors de l'import: " + e.message);
+        } finally {
+            setImporting(false);
+        }
     };
 
     const filtered = products.filter(p => {
@@ -74,11 +112,20 @@ export default function AdminProductsPage() {
                         {products.length} produit{products.length !== 1 ? 's' : ''} dans le catalogue
                     </p>
                 </div>
-                <Link href="/admin/products/new">
-                    <button className="flex items-center gap-2 bg-[#4a2128] hover:bg-[#b38b59] text-white font-cinzel tracking-widest py-3 px-6 rounded-xl transition-all duration-300 uppercase text-sm shadow-sm">
-                        <Plus size={18} /> Ajouter un produit
+                <div className="flex flex-wrap gap-3">
+                    <button
+                        onClick={handleImport}
+                        disabled={importing}
+                        className="flex items-center gap-2 bg-white text-[#4a2128] border border-[#b38b59]/20 hover:bg-[#fdfaf6] font-cinzel tracking-widest py-3 px-6 rounded-xl transition-all duration-300 uppercase text-sm shadow-sm disabled:opacity-50"
+                    >
+                        <DownloadCloud size={18} /> {importing ? 'Importation en cours...' : 'Importer anciens produits'}
                     </button>
-                </Link>
+                    <Link href="/admin/products/new">
+                        <button className="flex items-center gap-2 bg-[#4a2128] hover:bg-[#b38b59] text-white font-cinzel tracking-widest py-3 px-6 rounded-xl transition-all duration-300 uppercase text-sm shadow-sm">
+                            <Plus size={18} /> Ajouter un produit
+                        </button>
+                    </Link>
+                </div>
             </div>
 
             {/* Filters */}
