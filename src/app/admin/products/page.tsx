@@ -6,7 +6,7 @@ import { db } from '@/lib/firebase';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Plus, Search, Pencil, Trash2, Package, ChevronDown, DownloadCloud } from 'lucide-react';
-import { addDoc } from 'firebase/firestore';
+import { addDoc, updateDoc } from 'firebase/firestore';
 
 interface Product {
     id: string; name: string; description: string; price: number;
@@ -57,10 +57,10 @@ export default function AdminProductsPage() {
             const newProducts = await res.json();
 
             let count = 0;
+            let updatedCount = 0;
             for (const p of newProducts) {
-                // Check if product with exact same name already exists to avoid duplicates
-                const exists = products.some(existing => existing.name.trim().toLowerCase() === p.name.trim().toLowerCase());
-                if (!exists) {
+                const existing = products.find(ex => ex.name.trim().toLowerCase() === p.name.trim().toLowerCase());
+                if (!existing) {
                     await addDoc(collection(db, 'products'), {
                         name: p.name,
                         description: p.description || '',
@@ -68,14 +68,23 @@ export default function AdminProductsPage() {
                         category: p.category || 'DIVERS',
                         stock: p.stock || 1,
                         image: p.image || '',
+                        images: p.images || [],
                         is_available: p.is_available !== false,
                         shippingCost: p.shippingCost || 7.5,
                         createdAt: new Date().toISOString()
                     });
                     count++;
+                } else if (!existing.image && p.image) {
+                    // Update existing if it was missing image and description
+                    await updateDoc(doc(db, 'products', existing.id), {
+                        description: existing.description === '' ? p.description : existing.description,
+                        image: p.image || '',
+                        images: p.images || [],
+                    });
+                    updatedCount++;
                 }
             }
-            alert(`Importation réussie ! ${count} nouveaux produits ajoutés (les doublons ont été ignorés). Rechargez la page.`);
+            alert(`Succès! ${count} nouveaux ajoutés, ${updatedCount} anciens corrigés (images et descriptions ajoutées).`);
             window.location.reload();
         } catch (e: any) {
             console.error(e);
