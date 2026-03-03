@@ -33,10 +33,10 @@ export default function MentionsLegalesPage() {
                         </h2>
                         <p>
                             Le site est hébergé par :<br />
-                            <strong>Netlify, Inc.</strong><br />
-                            44 Montgomery Street, Suite 300<br />
-                            San Francisco, California 94104<br />
-                            Site web : www.netlify.com
+                            <strong>Vercel Inc.</strong><br />
+                            440 N Barranca Ave #4133<br />
+                            Covina, CA 91723<br />
+                            Site web : www.vercel.com
                         </p>
                     </section>
 
