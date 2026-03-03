@@ -58,22 +58,17 @@ export default function Footer() {
 
                 {/* Bottom Bar */}
                 <div className="mt-24 pt-8 border-t border-[#b38b59]/10 flex flex-col items-center gap-6">
-                    <div className="flex items-center gap-4">
-                        <div className="w-1.5 h-1.5 bg-[#b38b59] rotate-45" />
-                        <p className="text-[10px] uppercase tracking-[0.5em] text-gray-400 font-cinzel">
-                            © {year} Le Petit Coin Magique
-                        </p>
-                        <div className="w-1.5 h-1.5 bg-[#b38b59] rotate-45" />
+                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.4em] text-gray-400 font-cinzel">
+                        <span>© {year} Le Petit Coin Magique by</span>
+                        <a
+                            href="https://syntalys.ch"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 hover:text-blue-700 transition-colors duration-500 font-bold"
+                        >
+                            Syntalys
+                        </a>
                     </div>
-
-                    <a
-                        href="https://syntalys.ch"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[10px] uppercase tracking-[0.4em] text-blue-500 hover:text-blue-700 transition-colors duration-500 font-cinzel font-bold"
-                    >
-                        by Syntalys
-                    </a>
 
                     <Link href="/admin" className="text-gray-300 hover:text-[#b38b59] transition-colors duration-500" title="Accès Grimoire">
                         <Lock size={16} strokeWidth={1.5} />
