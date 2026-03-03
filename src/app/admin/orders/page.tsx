@@ -14,13 +14,19 @@ interface Order {
 
 const STATUS_COLORS: Record<string, string> = {
     pending: 'bg-yellow-100 text-yellow-700',
+    awaiting_payment: 'bg-orange-50 text-orange-600',
     paid: 'bg-green-100 text-green-700',
     shipped: 'bg-blue-100 text-blue-700',
     delivered: 'bg-emerald-100 text-emerald-700',
     cancelled: 'bg-red-100 text-red-700',
 };
 const STATUS_LABELS: Record<string, string> = {
-    pending: 'En attente', paid: 'Payée', shipped: 'Expédiée', delivered: 'Livrée', cancelled: 'Annulée',
+    pending: 'En attente',
+    awaiting_payment: 'Paiement en cours',
+    paid: 'Payée',
+    shipped: 'Expédiée',
+    delivered: 'Livrée',
+    cancelled: 'Annulée',
 };
 
 export default function AdminOrdersPage() {
@@ -63,13 +69,15 @@ export default function AdminOrdersPage() {
             (o.customerEmail || '').toLowerCase().includes(search.toLowerCase()) ||
             (o.id || '').toLowerCase().includes(search.toLowerCase());
         const matchStatus = filterStatus === 'all'
-            ? o.status !== 'pending' // On cache les "pending" par défaut dans le "Tous"
+            ? (o.status !== 'pending' && o.status !== 'awaiting_payment') // On cache les commandes non confirmées par défaut
             : o.status === filterStatus;
         const matchArchive = !!o.archived === showArchived;
         return matchSearch && matchStatus && matchArchive;
     });
 
-    const totalRevenue = orders.reduce((acc, o) => acc + (o.total || 0), 0);
+    const totalRevenue = orders
+        .filter(o => ['paid', 'shipped', 'delivered'].includes(o.status))
+        .reduce((acc, o) => acc + (o.total || 0), 0);
 
     return (
         <div className="p-8">
@@ -77,8 +85,8 @@ export default function AdminOrdersPage() {
                 <div>
                     <h1 className="font-cinzel text-3xl text-[#4a2128] tracking-widest uppercase">Commandes</h1>
                     <p className="text-gray-500 font-architects mt-1">
-                        {orders.filter(o => !o.archived).length} active{orders.filter(o => !o.archived).length !== 1 ? 's' : ''} ·
-                        {orders.filter(o => o.archived).length} archivée{orders.filter(o => o.archived).length !== 1 ? 's' : ''}
+                        {orders.filter(o => !o.archived && o.status !== 'pending' && o.status !== 'awaiting_payment').length} active{orders.filter(o => !o.archived && o.status !== 'pending' && o.status !== 'awaiting_payment').length !== 1 ? 's' : ''} ·
+                        {orders.length} au total
                     </p>
                 </div>
                 <div className="flex bg-gray-100 p-1 rounded-xl">

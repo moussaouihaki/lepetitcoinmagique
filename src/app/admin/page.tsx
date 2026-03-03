@@ -21,10 +21,31 @@ export default function AdminDashboardPage() {
                     getDocs(collection(db, 'orders')),
                 ]);
                 const orders = orderSnap.docs.map(d => ({ id: d.id, ...d.data() })) as any[];
-                const revenue = orders.reduce((s, o) => s + (o.total || 0), 0);
-                const emails = new Set(orders.map((o: any) => o.customerEmail).filter(Boolean));
-                setStats({ products: prodSnap.size, orders: orderSnap.size, customers: emails.size, revenue });
-                const sorted = [...orders].sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+
+                // On ne compte que les commandes "réelles" (payées ou confirmées)
+                const validOrders = orders.filter(o =>
+                    o.status === 'paid' ||
+                    o.status === 'shipped' ||
+                    o.status === 'delivered' ||
+                    o.status === 'cancelled'
+                );
+
+                // CA Total : Uniquement les commandes payées ou livrées (pas annulées)
+                const revenueStatus = ['paid', 'shipped', 'delivered'];
+                const revenue = orders
+                    .filter(o => revenueStatus.includes(o.status))
+                    .reduce((s, o) => s + (o.total || 0), 0);
+
+                const emails = new Set(validOrders.map((o: any) => o.customerEmail).filter(Boolean));
+
+                setStats({
+                    products: prodSnap.size,
+                    orders: validOrders.length,
+                    customers: emails.size,
+                    revenue
+                });
+
+                const sorted = [...validOrders].sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
                 setRecentOrders(sorted.slice(0, 5));
             } catch (e) { console.error(e); }
             finally { setLoading(false); }
