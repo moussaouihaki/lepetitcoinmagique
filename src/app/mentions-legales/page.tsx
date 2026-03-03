@@ -21,9 +21,9 @@ export default function MentionsLegalesPage() {
                         <p>
                             Le site internet <strong>lepetitcoinmagique.ch</strong> est édité par :<br />
                             <strong>Le Petit Coin Magique</strong><br />
-                            Responsable de publication : L'artisan du Petit Coin Magique<br />
+                            Responsable de publication : Jennifer du Magasin Le Petit Coin Magique<br />
                             Adresse : Tavannes, Jura Bernois, Suisse<br />
-                            Email : contact@lepetitcoinmagique.ch
+                            Email : lepetitcoinmagique88@gmail.com
                         </p>
                     </section>
 
