@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+  base = "."
+
+[build.environment]
+  NEXT_USE_NETLIFY_EDGE = "true"
+  # This tells Netlify where to look for the project root
+  # and avoids scanning the parent directories for lockfiles.
+  # Netlify's build image will use this directory as the context.
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[functions]
+  node_version = "20"
