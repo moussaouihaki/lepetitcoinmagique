@@ -9,6 +9,7 @@ import Link from 'next/link';
 interface Order {
     id: string; customerName: string; customerEmail: string;
     total: number; status: string; createdAt: any; items?: any[];
+    archived?: boolean;
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -27,6 +28,8 @@ export default function AdminOrdersPage() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState('all');
+    const [showArchived, setShowArchived] = useState(false);
+    const [archiving, setArchiving] = useState<string | null>(null);
 
     useEffect(() => {
         const fetch = async () => {
@@ -46,11 +49,23 @@ export default function AdminOrdersPage() {
         setOrders(prev => prev.map(o => o.id === id ? { ...o, status } : o));
     };
 
+    const toggleArchive = async (id: string, current: boolean) => {
+        setArchiving(id);
+        try {
+            await updateDoc(doc(db, 'orders', id), { archived: !current });
+            setOrders(prev => prev.map(o => o.id === id ? { ...o, archived: !current } : o));
+        } catch (e) { console.error(e); }
+        finally { setArchiving(null); }
+    };
+
     const filtered = orders.filter(o => {
         const matchSearch = (o.customerName || '').toLowerCase().includes(search.toLowerCase()) ||
             (o.customerEmail || '').toLowerCase().includes(search.toLowerCase());
-        const matchStatus = filterStatus === 'all' || o.status === filterStatus;
-        return matchSearch && matchStatus;
+        const matchStatus = filterStatus === 'all'
+            ? o.status !== 'pending' // On cache les "pending" par défaut dans le "Tous"
+            : o.status === filterStatus;
+        const matchArchive = !!o.archived === showArchived;
+        return matchSearch && matchStatus && matchArchive;
     });
 
     const totalRevenue = orders.reduce((acc, o) => acc + (o.total || 0), 0);
@@ -61,9 +76,23 @@ export default function AdminOrdersPage() {
                 <div>
                     <h1 className="font-cinzel text-3xl text-[#4a2128] tracking-widest uppercase">Commandes</h1>
                     <p className="text-gray-500 font-architects mt-1">
-                        {orders.length} commande{orders.length !== 1 ? 's' : ''} · CA total :
-                        <span className="text-[#b38b59] font-bold ml-1">{totalRevenue.toFixed(2)} CHF</span>
+                        {orders.filter(o => !o.archived).length} active{orders.filter(o => !o.archived).length !== 1 ? 's' : ''} ·
+                        {orders.filter(o => o.archived).length} archivée{orders.filter(o => o.archived).length !== 1 ? 's' : ''}
                     </p>
+                </div>
+                <div className="flex bg-gray-100 p-1 rounded-xl">
+                    <button
+                        onClick={() => setShowArchived(false)}
+                        className={`px-6 py-2 rounded-lg font-cinzel text-xs tracking-widest transition-all ${!showArchived ? 'bg-white text-[#4a2128] shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                    >
+                        ACTIVES
+                    </button>
+                    <button
+                        onClick={() => setShowArchived(true)}
+                        className={`px-6 py-2 rounded-lg font-cinzel text-xs tracking-widest transition-all ${showArchived ? 'bg-[#4a2128] text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                    >
+                        ARCHIVES
+                    </button>
                 </div>
             </div>
 
@@ -139,6 +168,14 @@ export default function AdminOrdersPage() {
                                                     </select>
                                                     <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                                                 </div>
+                                                <button
+                                                    onClick={() => toggleArchive(order.id, !!order.archived)}
+                                                    disabled={archiving === order.id}
+                                                    className={`p-2 rounded-lg transition-colors ${order.archived ? 'bg-green-50 text-green-600 hover:bg-green-100' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+                                                    title={order.archived ? "Désarchiver" : "Archiver"}
+                                                >
+                                                    <ShoppingBag size={16} className={order.archived ? "rotate-180" : ""} />
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>

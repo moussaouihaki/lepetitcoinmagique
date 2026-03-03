@@ -18,13 +18,14 @@ export async function POST(req: Request) {
     try {
         const { items, orderId, customerEmail, shippingCost } = await req.json();
 
-        const origin = req.headers.get('origin') || 'https://le-petit-coin-magique.vercel.app';
+        const origin = req.headers.get('origin') || 'https://lepetitcoinmagique.ch';
 
         const lineItems = items.map((item: any) => ({
             price_data: {
                 currency: 'chf',
                 product_data: {
                     name: item.name,
+                    description: item.description || '',
                     ...(item.image ? { images: [item.image] } : {}),
                 },
                 unit_amount: Math.round(item.price * 100),
@@ -37,7 +38,10 @@ export async function POST(req: Request) {
             lineItems.push({
                 price_data: {
                     currency: 'chf',
-                    product_data: { name: 'Frais de port' },
+                    product_data: {
+                        name: 'Frais de port',
+                        description: 'Livraison sécurisée sous 5 jours ouvrés'
+                    },
                     unit_amount: Math.round(shippingCost * 100),
                 },
                 quantity: 1,
@@ -52,6 +56,15 @@ export async function POST(req: Request) {
             success_url: `${origin}/checkout/success?orderId=${orderId}&session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/checkout`,
             metadata: { orderId: orderId || '' },
+            allow_promotion_codes: true, // Permet d'ajouter des codes promo sur la gauche
+            custom_text: {
+                shipping_address: {
+                    message: "Votre commande sera préparée avec soin dans notre atelier du Jura."
+                },
+                submit: {
+                    message: "Paiement sécurisé crypté SSL"
+                }
+            }
         });
 
         return NextResponse.json({ url: session.url });

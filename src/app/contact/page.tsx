@@ -1,7 +1,38 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { MapPin, Phone, Clock, Mail, Instagram, Facebook } from 'lucide-react';
 import { FaTiktok } from 'react-icons/fa';
+import Image from 'next/image';
+
+interface GalleryItem {
+    id: string;
+    url: string;
+}
 
 export default function ContactPage() {
+    const [images, setImages] = useState<GalleryItem[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchImages = async () => {
+            try {
+                const q = query(collection(db, 'gallery'), orderBy('createdAt', 'desc'));
+                const snap = await getDocs(q);
+                setImages(snap.docs.map(d => ({ id: d.id, ...d.data() })) as GalleryItem[]);
+            } catch (e) {
+                console.error(e);
+                // Fallback to unordered if index is missing
+                const snap = await getDocs(collection(db, 'gallery'));
+                setImages(snap.docs.map(d => ({ id: d.id, ...d.data() })) as GalleryItem[]);
+            }
+            finally { setLoading(false); }
+        };
+        fetchImages();
+    }, []);
+
     return (
         <div className="flex flex-col w-full overflow-hidden bg-[#FDFBF8] min-h-screen">
             <section className="relative px-6 py-24 border-b border-[#b38b59]/20">
@@ -97,10 +128,34 @@ export default function ContactPage() {
                                 </a>
                             </div>
                         </div>
-
                     </div>
                 </div>
+
+                {/* Gallery Section */}
+                {images.length > 0 && (
+                    <div className="container mx-auto px-6 max-w-[1200px] mt-32 mb-16">
+                        <div className="flex flex-col items-center text-center mb-16">
+                            <h2 className="font-cinzel text-4xl text-[#4a2128] uppercase tracking-widest drop-shadow-sm">Galerie de la boutique</h2>
+                            <div className="w-12 h-px bg-[#b38b59]/30 mt-6" />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {images.map((img) => (
+                                <div key={img.id} className="relative aspect-[4/5] rounded-[2rem] overflow-hidden border-8 border-[#FDFBF8] shadow-2xl group">
+                                    <Image
+                                        src={img.url}
+                                        alt="Intérieur boutique"
+                                        fill
+                                        className="object-cover group-hover:scale-110 transition-transform duration-1000"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#4a2128]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </section>
         </div>
     );
 }
+

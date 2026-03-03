@@ -21,13 +21,24 @@ export default function ProductCard({ product }: { product: Product }) {
             <div className="relative w-full aspect-[4/5] mb-6 overflow-hidden bg-[#f0eae1] p-2 border border-gold shadow-premium transition-transform duration-700 group-hover:-translate-y-2">
                 {/* Inner Frame */}
                 <div className="relative w-full h-full border border-gold/50 overflow-hidden bg-white">
+                    {product.stock !== undefined && product.stock <= 0 && (
+                        <div className="absolute top-4 right-4 z-20 bg-[#4a2128] text-white font-cinzel text-[10px] tracking-widest px-3 py-1.5 shadow-lg border border-gold/30 uppercase animate-pulse">
+                            Vendu
+                        </div>
+                    )}
                     <Link href={`/product/${product.id}`} className="block w-full h-full">
-                        <Image
-                            src={product.image}
-                            alt={product.name}
-                            fill
-                            className="object-contain p-4 transition-transform duration-1000 group-hover:scale-105"
-                        />
+                        {(product.image || (product.images && product.images.length > 0)) ? (
+                            <Image
+                                src={product.image || product.images?.[0] || ''}
+                                alt={product.name}
+                                fill
+                                className="object-contain p-4 transition-transform duration-1000 group-hover:scale-105"
+                            />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                                <span className="text-gray-300 font-architects">Pas d'image</span>
+                            </div>
+                        )}
                     </Link>
 
                     {/* Magical Hover Overlay */}
@@ -42,9 +53,10 @@ export default function ProductCard({ product }: { product: Product }) {
                             <Eye size={18} />
                         </Link>
                         <button
-                            onClick={() => addItem(product)}
-                            className="bg-[#4a2128] text-[#fdfaf6] p-3 rounded-full hover:bg-[#b38b59] transition-colors shadow-lg"
-                            title="Ajouter au panier"
+                            onClick={() => product.stock !== 0 && addItem(product)}
+                            disabled={product.stock === 0}
+                            className={`p-3 rounded-full transition-colors shadow-lg ${product.stock === 0 ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200' : 'bg-[#4a2128] text-[#fdfaf6] hover:bg-[#b38b59]'}`}
+                            title={product.stock === 0 ? "Épuisé" : "Ajouter au panier"}
                         >
                             <ShoppingCart size={18} />
                         </button>

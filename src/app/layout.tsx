@@ -19,8 +19,35 @@ const architects = Architects_Daughter({
 });
 
 export const metadata: Metadata = {
-  title: 'Le Petit Coin Magique - Artisanat féérique',
-  description: 'Créations artisanales, chaudrons, poterie, forge, bijoux. Un monde magique dans le Jura Bernois.',
+  title: {
+    default: 'Le Petit Coin Magique - Artisanat Ésotérique & Créations Féériques',
+    template: '%s | Le Petit Coin Magique'
+  },
+  description: 'Découvrez l\'échoppe mystique de Tavannes : artisanat local, chaudrons de sorcière, poterie médiévale, bijoux énergétiques et forge d\'art. Un univers magique au cœur du Jura Bernois, Suisse.',
+  keywords: ['artisanat magique', 'échoppe ésotérique', 'Tavannes', 'Jura Bernois', 'chaudrons', 'poterie artisanale', 'bijoux spirituels', 'forge d\'art', 'Suisse artisanat', 'cadeau original', 'monde féérique'],
+  authors: [{ name: 'Le Petit Coin Magique' }],
+  creator: 'Le Petit Coin Magique',
+  openGraph: {
+    type: 'website',
+    locale: 'fr_CH',
+    url: 'https://lepetitcoinmagique.ch',
+    title: 'Le Petit Coin Magique - Artisanat Ésotérique & Créations Féériques',
+    description: 'Boutique artisanale spécialisée dans les objets magiques et spirituels à Tavannes. Forge, poterie, bijoux et curiosités.',
+    siteName: 'Le Petit Coin Magique',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Le Petit Coin Magique - Artisanat Ésotérique',
+    description: 'Objets magiques et créations artisanales uniques à Tavannes, Jura Bernois.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: '/images/logo.jpg',
+    apple: '/images/logo.jpg',
+  }
 };
 
 export default function RootLayout({

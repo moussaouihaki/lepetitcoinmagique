@@ -1,18 +1,21 @@
+import { Metadata } from 'next';
 import ProductCard from '@/components/ProductCard';
 import { Product } from '@/store/cart';
 import { getProductsFromFirebase } from '@/lib/products';
 
+export const metadata: Metadata = {
+    title: 'Le Grimoire des Curiosités - Nos Créations Artisanales',
+    description: 'Explorez notre collection complète d\'objets ésotériques : chaudrons, bijoux, poteries et curiosités forgées à la main dans le Jura Bernois.',
+};
 
 export default async function CuriositesPage() {
     const allProducts: Product[] = await getProductsFromFirebase();
-
-
-    const categories = Array.from(new Set(allProducts.map((p) => p.category.toUpperCase())));
+    const categories = Array.from(new Set(allProducts.map((p) => (p.category || '').toUpperCase()))).filter(Boolean).sort();
 
     return (
-        <div className="container mx-auto px-6 py-20 max-w-[1400px]">
+        <div className="container mx-auto px-6 py-20 max-w-[1400px] pt-32">
             <div className="text-center mb-24 relative max-w-3xl mx-auto">
-                <span className="font-architects text-[#b38b59] text-xl mb-4 block">Découvrez nos envoûtements</span>
+                <span className="font-architects text-[#b38b59] text-xl mb-4 block italic">Découvrez nos envoûtements</span>
                 <h1 className="font-cinzel text-5xl md:text-7xl text-[#4a2128] mb-8 uppercase drop-shadow-sm tracking-widest leading-tight">
                     Le Grimoire Complet
                 </h1>
@@ -23,7 +26,7 @@ export default async function CuriositesPage() {
                     <div className="w-12 h-px bg-gradient-to-r from-[#b38b59] to-transparent" />
                 </div>
 
-                <p className="font-architects text-lg md:text-xl text-gray-600 leading-relaxed">
+                <p className="font-architects text-lg md:text-xl text-gray-600 leading-relaxed italic">
                     Parcourez l'ensemble de nos créations artisanales. Chaque artefact a été forgé, cousu, sculpté ou assemblé avec passion, dans le respect des traditions ésotériques.
                 </p>
             </div>
@@ -38,11 +41,11 @@ export default async function CuriositesPage() {
             ) : (
                 <div className="flex flex-col gap-32">
                     {categories.map((cat) => {
-                        const categoryProducts = allProducts.filter((p) => p.category.toUpperCase() === cat);
+                        const categoryProducts = allProducts.filter((p) => (p.category || '').toUpperCase() === cat);
                         if (categoryProducts.length === 0) return null;
 
                         return (
-                            <section key={cat} className="relative">
+                            <section key={cat} id={cat.toLowerCase()} className="relative scroll-mt-32">
                                 <div className="flex flex-col items-center text-center mb-16 relative">
                                     <h2 className="font-cinzel text-3xl md:text-4xl text-[#2c2522] uppercase tracking-widest z-10 bg-[#fdfaf6] px-8">
                                         {cat}

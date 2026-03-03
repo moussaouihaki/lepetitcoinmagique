@@ -7,7 +7,9 @@ export interface Product {
     description: string;
     category: string;
     image: string;
+    images?: string[];
     shippingCost?: number;
+    stock?: number;
 }
 
 export interface CartItem extends Product {
@@ -29,6 +31,13 @@ export const useCartStore = create<CartStore>((set, get) => ({
     addItem: (product) => {
         const items = get().items;
         const existing = items.find((i) => i.id === product.id);
+
+        // Prevent adding if stock is 0 or less
+        if (product.stock !== undefined && product.stock <= 0) return;
+
+        // Prevent adding more than available stock
+        if (existing && product.stock !== undefined && existing.quantity >= product.stock) return;
+
         const newItems = existing
             ? items.map((i) => i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i)
             : [...items, { ...product, quantity: 1 }];

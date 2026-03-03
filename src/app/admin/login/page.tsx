@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Image from 'next/image';
-import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
+import Link from 'next/link';
+import { Lock, Mail, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 
 export default function AdminLoginPage() {
     const [email, setEmail] = useState('');
@@ -42,7 +43,7 @@ export default function AdminLoginPage() {
                 <div className="text-center mb-10">
                     <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-[#b38b59]/40 mx-auto mb-5 shadow-md">
                         <Image
-                            src="https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/fb_img_1747862163342-1-high.jpg"
+                            src="/images/logo.jpg"
                             alt="Le Petit Coin Magique"
                             fill
                             className="object-cover"
@@ -103,10 +104,17 @@ export default function AdminLoginPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-[#4a2128] hover:bg-[#b38b59] text-white font-cinzel tracking-widest py-3.5 rounded-xl transition-all duration-300 uppercase disabled:opacity-50"
+                            className="w-full bg-[#4a2128] hover:bg-[#b38b59] text-white font-cinzel tracking-widest py-3.5 rounded-xl transition-all duration-300 uppercase disabled:opacity-50 mb-4"
                         >
                             {loading ? 'Authentification...' : 'Entrer dans le Grimoire'}
                         </button>
+
+                        <Link
+                            href="/"
+                            className="w-full flex items-center justify-center gap-2 text-gray-400 hover:text-[#b38b59] transition-colors font-architects text-sm"
+                        >
+                            <ArrowLeft size={14} /> Retourner à l'accueil
+                        </Link>
                     </form>
                 </div>
 

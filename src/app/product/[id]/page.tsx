@@ -25,6 +25,7 @@ export default function ProductPage() {
     const [related, setRelated] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [added, setAdded] = useState(false);
+    const [activeImage, setActiveImage] = useState<string>('');
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -45,6 +46,7 @@ export default function ProductPage() {
                     shippingCost: data.shippingCost || 7.5,
                 };
                 setProduct(p);
+                setActiveImage(p.image);
 
                 // Fetch related
                 const allSnap = await getDocs(collection(db, 'products'));
@@ -88,7 +90,7 @@ export default function ProductPage() {
             <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
                 <h1 className="font-cinzel text-4xl text-[#4a2128] mb-4">Artefact Introuvable</h1>
                 <p className="font-architects text-xl text-gray-600 mb-8">Cet objet mystique semble avoir disparu de notre grimoire.</p>
-                <Link href="/curiosites" className="font-cinzel text-[#b38b59] hover:underline flex items-center gap-2">
+                <Link href="/#boutique" className="font-cinzel text-[#b38b59] hover:underline flex items-center gap-2">
                     <ArrowLeft size={20} /> Retour aux Curiosités
                 </Link>
             </div>
@@ -108,22 +110,39 @@ export default function ProductPage() {
                 </nav>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-                    {/* Image */}
-                    <div className="relative group">
-                        <div className="absolute inset-0 bg-[#b38b59]/5 blur-3xl rounded-full scale-75 -z-10" />
-                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-white p-4 border border-[#b38b59]/20 shadow-lg">
-                            <div className="relative w-full h-full border border-[#b38b59]/10">
-                                {product.image ? (
-                                    <Image src={product.image} alt={product.name} fill className="object-contain p-8" priority />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center">
-                                        <Package size={64} className="text-gray-200" />
-                                    </div>
-                                )}
+                    {/* Gallery */}
+                    <div className="flex flex-col gap-6">
+                        <div className="relative group">
+                            <div className="absolute inset-0 bg-[#b38b59]/5 blur-3xl rounded-full scale-75 -z-10" />
+                            <div className="relative aspect-[4/5] w-full overflow-hidden bg-white p-4 border border-[#b38b59]/20 shadow-lg">
+                                <div className="relative w-full h-full border border-[#b38b59]/10">
+                                    {activeImage ? (
+                                        <Image src={activeImage} alt={product.name} fill className="object-contain p-8 transition-opacity duration-500" priority />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <Package size={64} className="text-gray-200" />
+                                        </div>
+                                    )}
+                                </div>
                             </div>
+                            <div className="absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-[#b38b59]/40" />
+                            <div className="absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-[#b38b59]/40" />
                         </div>
-                        <div className="absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-[#b38b59]/40" />
-                        <div className="absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-[#b38b59]/40" />
+
+                        {/* Thumbnails */}
+                        {product.images && product.images.length > 1 && (
+                            <div className="flex flex-wrap gap-4 mt-2">
+                                {product.images.map((img, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setActiveImage(img)}
+                                        className={`relative w-24 h-24 overflow-hidden border transition-all duration-300 bg-white ${activeImage === img ? 'border-[#b38b59] scale-105 shadow-md' : 'border-gray-200 opacity-60 hover:opacity-100'}`}
+                                    >
+                                        <Image src={img} alt={`${product.name} ${idx + 1}`} fill className="object-cover p-1" />
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Content */}

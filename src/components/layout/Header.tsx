@@ -46,7 +46,7 @@ export default function Header() {
                         </button>
                         <Link href="/" className="relative h-14 w-14 rounded-full overflow-hidden border border-[#b38b59] p-0.5 bg-white shadow-sm">
                             <Image
-                                src="https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/fb_img_1747862163342-1-high.jpg"
+                                src="/images/logo.jpg"
                                 alt="Le Petit Coin Magique"
                                 fill
                                 className="object-cover rounded-full"
@@ -68,12 +68,15 @@ export default function Header() {
                                 Accueil
                             </Link>
 
-                            {/* Boutique Dropdown */}
+                            {/* Boutique Dropdown - Back to Separate Page */}
                             <div className="relative group/boutique">
-                                <button className="font-cinzel text-xl tracking-widest text-gray-700 group-hover/boutique:text-[#b38b59] transition-colors uppercase flex items-center gap-2 pb-6 -mb-6">
+                                <Link
+                                    href="/curiosites"
+                                    className="font-cinzel text-xl tracking-widest text-gray-700 group-hover/boutique:text-[#b38b59] transition-colors uppercase flex items-center gap-2 pb-6 -mb-6"
+                                >
                                     Boutique
                                     <ChevronDown size={16} className="transition-transform duration-500 group-hover/boutique:rotate-180" />
-                                </button>
+                                </Link>
 
                                 <div className="absolute top-[calc(100%-8px)] left-1/2 -translate-x-1/2 pt-6 opacity-0 invisible group-hover/boutique:opacity-100 group-hover/boutique:visible transition-all duration-300">
                                     <div className="bg-white border text-center border-gold shadow-premium p-8 min-w-[320px] flex flex-col gap-5">
@@ -82,7 +85,7 @@ export default function Header() {
                                         {categories.map((cat) => (
                                             <Link
                                                 key={cat}
-                                                href={`/category/${encodeURIComponent(cat.toLowerCase())}`}
+                                                href={`/curiosites#${cat.toLowerCase()}`}
                                                 className="font-cinzel tracking-widest text-sm uppercase text-gray-600 hover:text-[#4a2128] hover:tracking-[0.25em] transition-all"
                                             >
                                                 {cat}
@@ -106,7 +109,7 @@ export default function Header() {
                         <Link href="/" className={`transition-all duration-1000 z-10 flex flex-col items-center gap-2 group ${scrolled ? 'scale-75 -translate-y-2' : ''}`}>
                             <div className="relative h-28 w-28 rounded-full overflow-hidden border-2 border-[#b38b59] p-1 bg-white shadow-lg group-hover:border-[#4a2128] transition-colors duration-500">
                                 <Image
-                                    src="https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/fb_img_1747862163342-1-high.jpg"
+                                    src="/images/logo.jpg"
                                     alt="Le Petit Coin Magique"
                                     fill
                                     className="object-cover rounded-full"
@@ -177,7 +180,7 @@ export default function Header() {
                                                             transition={{ delay: i * 0.04 }}
                                                         >
                                                             <Link
-                                                                href={`/category/${encodeURIComponent(cat.toLowerCase())}`}
+                                                                href={`/curiosites#${cat.toLowerCase()}`}
                                                                 onClick={() => { setMobileMenuOpen(false); setMobileBoutiqueOpen(false); }}
                                                                 className="font-cinzel text-lg tracking-widest uppercase text-gray-600 hover:text-[#4a2128] transition-colors"
                                                             >

@@ -5,12 +5,13 @@ import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Plus, Search, Pencil, Trash2, Package, ChevronDown, DownloadCloud } from 'lucide-react';
-import { addDoc, updateDoc } from 'firebase/firestore';
+import { Plus, Search, Pencil, Trash2, Package, ChevronDown } from 'lucide-react';
+
 
 interface Product {
     id: string; name: string; description: string; price: number;
-    category: string; image: string; is_available: boolean; stock?: number;
+    category: string; image: string; images?: string[]; is_available: boolean; stock?: number;
+    shippingCost?: number;
 }
 
 const CATEGORIES = [
@@ -25,7 +26,6 @@ export default function AdminProductsPage() {
     const [search, setSearch] = useState('');
     const [filterCategory, setFilterCategory] = useState('Toutes les catégories');
     const [deleting, setDeleting] = useState<string | null>(null);
-    const [importing, setImporting] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
@@ -49,50 +49,6 @@ export default function AdminProductsPage() {
         finally { setDeleting(null); }
     };
 
-    const handleImport = async () => {
-        if (!confirm("Voulez-vous importer tous les anciens produits depuis le site original ? Cela rajoutera les produits manquants.")) return;
-        setImporting(true);
-        try {
-            const res = await fetch('/data/products_full.json');
-            const newProducts = await res.json();
-
-            let count = 0;
-            let updatedCount = 0;
-            for (const p of newProducts) {
-                const existing = products.find(ex => ex.name.trim().toLowerCase() === p.name.trim().toLowerCase());
-                if (!existing) {
-                    await addDoc(collection(db, 'products'), {
-                        name: p.name,
-                        description: p.description || '',
-                        price: p.price || 0,
-                        category: p.category || 'DIVERS',
-                        stock: p.stock || 1,
-                        image: p.image || '',
-                        images: p.images || [],
-                        is_available: p.is_available !== false,
-                        shippingCost: p.shippingCost || 7.5,
-                        createdAt: new Date().toISOString()
-                    });
-                    count++;
-                } else if (!existing.image && p.image) {
-                    // Update existing if it was missing image and description
-                    await updateDoc(doc(db, 'products', existing.id), {
-                        description: existing.description === '' ? p.description : existing.description,
-                        image: p.image || '',
-                        images: p.images || [],
-                    });
-                    updatedCount++;
-                }
-            }
-            alert(`Succès! ${count} nouveaux ajoutés, ${updatedCount} anciens corrigés (images et descriptions ajoutées).`);
-            window.location.reload();
-        } catch (e: any) {
-            console.error(e);
-            alert("Erreur lors de l'import: " + e.message);
-        } finally {
-            setImporting(false);
-        }
-    };
 
     const filtered = products.filter(p => {
         const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -122,13 +78,7 @@ export default function AdminProductsPage() {
                     </p>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                    <button
-                        onClick={handleImport}
-                        disabled={importing}
-                        className="flex items-center gap-2 bg-white text-[#4a2128] border border-[#b38b59]/20 hover:bg-[#fdfaf6] font-cinzel tracking-widest py-3 px-6 rounded-xl transition-all duration-300 uppercase text-sm shadow-sm disabled:opacity-50"
-                    >
-                        <DownloadCloud size={18} /> {importing ? 'Importation en cours...' : 'Importer anciens produits'}
-                    </button>
+
                     <Link href="/admin/products/new">
                         <button className="flex items-center gap-2 bg-[#4a2128] hover:bg-[#b38b59] text-white font-cinzel tracking-widest py-3 px-6 rounded-xl transition-all duration-300 uppercase text-sm shadow-sm">
                             <Plus size={18} /> Ajouter un produit
@@ -199,8 +149,13 @@ export default function AdminProductsPage() {
                                         <td className="p-5">
                                             <div className="flex items-center gap-3">
                                                 <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex-shrink-0">
-                                                    {product.image ? (
-                                                        <Image src={product.image} alt={product.name} fill className="object-cover" />
+                                                    {(product.image || (product.images && product.images.length > 0)) ? (
+                                                        <Image
+                                                            src={product.image || product.images?.[0] || ''}
+                                                            alt={product.name}
+                                                            fill
+                                                            className="object-cover"
+                                                        />
                                                     ) : (
                                                         <div className="w-full h-full flex items-center justify-center"><Package size={16} className="text-gray-300" /></div>
                                                     )}

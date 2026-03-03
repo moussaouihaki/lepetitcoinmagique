@@ -52,7 +52,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="flex items-center gap-3">
                     <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#b38b59]/30">
                         <Image
-                            src="https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/fb_img_1747862163342-1-high.jpg"
+                            src="/images/logo.jpg"
                             alt="Logo"
                             fill
                             className="object-cover"
@@ -83,7 +83,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <div className="flex items-center gap-3">
                         <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-[#b38b59]/30 flex-shrink-0">
                             <Image
-                                src="https://primary.jwwb.nl/public/w/h/t/temp-ubihcddpkpizlqxqtbor/fb_img_1747862163342-1-high.jpg"
+                                src="/images/logo.jpg"
                                 alt="Le Petit Coin Magique"
                                 fill
                                 className="object-cover"
@@ -130,7 +130,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         </div>
                     </div>
                     <button
-                        onClick={async () => { await logout(); router.push('/admin/login'); }}
+                        onClick={async () => { await logout(); window.location.href = '/'; }}
                         className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:text-red-500 hover:bg-red-50 transition-all duration-200"
                     >
                         <LogOut size={18} />

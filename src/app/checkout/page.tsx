@@ -81,6 +81,7 @@ export default function CheckoutPage() {
                         price: i.price,
                         quantity: i.quantity,
                         image: i.image,
+                        description: i.category || 'Création artisanale',
                     })),
                     orderId: orderRef.id,
                     customerEmail: form.email,
@@ -118,7 +119,7 @@ export default function CheckoutPage() {
                     <ShoppingBag size={60} className="text-gray-300 mx-auto mb-6" />
                     <h1 className="font-cinzel text-3xl text-[#4a2128] uppercase tracking-widest mb-4">Panier Vide</h1>
                     <p className="font-architects text-gray-500 mb-8">Votre grimoire est vide pour le moment.</p>
-                    <Link href="/curiosites"><button className="bg-[#4a2128] text-white font-cinzel tracking-widest py-4 px-10 uppercase hover:bg-[#b38b59] transition-colors">Découvrir la boutique</button></Link>
+                    <Link href="/#boutique"><button className="bg-[#4a2128] text-white font-cinzel tracking-widest py-4 px-10 uppercase hover:bg-[#b38b59] transition-colors">Découvrir la boutique</button></Link>
                 </div>
             </div>
         );

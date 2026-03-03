@@ -17,7 +17,7 @@ export async function getProductsFromFirebase(): Promise<Product[]> {
                 images: data.images || (data.image ? [data.image] : []),
                 is_available: data.is_available !== false,
             } as Product & { images?: string[]; is_available?: boolean };
-        }).filter((p: any) => p.is_available !== false);
+        });
     } catch (e) {
         console.error('Firebase fetch error:', e);
         return [];

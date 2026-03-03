@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { doc, updateDoc } from 'firebase/firestore';
+import { collection, updateDoc, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Link from 'next/link';
 import { Check, Sparkles } from 'lucide-react';
@@ -14,12 +14,52 @@ function SuccessContent() {
     const sessionId = searchParams.get('session_id');
 
     useEffect(() => {
-        if (orderId && sessionId) {
-            updateDoc(doc(db, 'orders', orderId), {
-                status: 'paid',
-                stripeSessionId: sessionId,
-            }).catch(console.error);
-        }
+        const confirmPayment = async () => {
+            if (!orderId || !sessionId) return;
+
+            try {
+                // 1. Mark order as paid
+                const orderRef = doc(db, 'orders', orderId);
+                const orderSnap = await getDoc(orderRef);
+
+                if (orderSnap.exists()) {
+                    const orderData = orderSnap.data();
+
+                    // Only update if not already paid (prevents multiple triggers)
+                    if (orderData.status !== 'paid') {
+                        await updateDoc(orderRef, {
+                            status: 'paid',
+                            stripeSessionId: sessionId,
+                        });
+
+                        // 2. Manage Stocks: Decrement for each item purchased
+                        const items = orderData.items || [];
+                        for (const item of items) {
+                            if (item.id) {
+                                const prodRef = doc(db, 'products', item.id);
+                                const prodSnap = await getDoc(prodRef);
+
+                                if (prodSnap.exists()) {
+                                    const prodData = prodSnap.data();
+                                    const currentStock = typeof prodData.stock === 'number' ? prodData.stock : 1;
+                                    const orderedQty = item.quantity || 1;
+                                    const newStock = Math.max(0, currentStock - orderedQty);
+
+                                    await updateDoc(prodRef, {
+                                        stock: newStock,
+                                        is_available: newStock > 0 // Disparaît si plus de stock
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error confirming payment:', error);
+            }
+        };
+
+        confirmPayment();
     }, [orderId, sessionId]);
 
 

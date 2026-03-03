@@ -1,0 +1,498 @@
+[debug] [2026-03-02T21:57:12.445Z] ----------------------------------------------------------------------
+[debug] [2026-03-02T21:57:12.447Z] Command:       /usr/local/bin/node /Users/hakim/.npm/_npx/7750544ccf494d8b/node_modules/.bin/firebase deploy --only hosting --debug
+[debug] [2026-03-02T21:57:12.447Z] CLI Version:   15.8.0
+[debug] [2026-03-02T21:57:12.447Z] Platform:      darwin
+[debug] [2026-03-02T21:57:12.447Z] Node Version:  v24.13.1
+[debug] [2026-03-02T21:57:12.447Z] Time:          Mon Mar 02 2026 22:57:12 GMT+0100 (Central European Standard Time)
+[debug] [2026-03-02T21:57:12.447Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-03-02T21:57:13.063Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-03-02T21:57:13.064Z] > authorizing via signed-in user (moussaouihaki@gmail.com)
+[debug] [2026-03-02T21:57:13.064Z] [iam] checking project lepetitcoinmagique-3cab8 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-03-02T21:57:13.064Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:13.064Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:13.064Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/lepetitcoinmagique-3cab8:testIamPermissions [none]
+[debug] [2026-03-02T21:57:13.064Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/lepetitcoinmagique-3cab8:testIamPermissions  x-goog-user-project=lepetitcoinmagique-3cab8
+[debug] [2026-03-02T21:57:13.064Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/lepetitcoinmagique-3cab8:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-03-02T21:57:13.782Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/lepetitcoinmagique-3cab8:testIamPermissions 200
+[debug] [2026-03-02T21:57:13.782Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/lepetitcoinmagique-3cab8:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-03-02T21:57:13.783Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:13.783Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:13.783Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8 [none]
+[debug] [2026-03-02T21:57:14.133Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8 200
+[debug] [2026-03-02T21:57:14.133Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8 {"projectId":"lepetitcoinmagique-3cab8","projectNumber":"588757720945","displayName":"lepetitcoinmagique","name":"projects/lepetitcoinmagique-3cab8","resources":{"hostingSite":"lepetitcoinmagique-3cab8"},"state":"ACTIVE","etag":"1_50050b27-6ef6-40d3-b506-7b43264344c7"}
+[debug] [2026-03-02T21:57:14.917Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:14.917Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:14.918Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites pageToken=&pageSize=10
+[debug] [2026-03-02T21:57:15.966Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites 200
+[debug] [2026-03-02T21:57:15.966Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites {"sites":[{"name":"projects/lepetitcoinmagique-3cab8/sites/lepetitcoinmagique-3cab8","defaultUrl":"https://lepetitcoinmagique-3cab8.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2026-03-02T21:57:15.966Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:15.966Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:15.966Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites 
+[debug] [2026-03-02T21:57:16.882Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites 200
+[debug] [2026-03-02T21:57:16.882Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites {"sites":[{"name":"projects/lepetitcoinmagique-3cab8/sites/lepetitcoinmagique-3cab8","defaultUrl":"https://lepetitcoinmagique-3cab8.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2026-03-02T21:57:16.882Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:16.882Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:16.882Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/webApps/-/config [none]
+[debug] [2026-03-02T21:57:17.470Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/webApps/-/config 200
+[debug] [2026-03-02T21:57:17.470Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/webApps/-/config {"projectId":"lepetitcoinmagique-3cab8","appId":"1:588757720945:web:2ca62deb422fdbaa44a0d0","storageBucket":"lepetitcoinmagique-3cab8.firebasestorage.app","apiKey":"AIzaSyAmPzXjDB2_Mghg8fpoOaTokQSeyvQnbz8","authDomain":"lepetitcoinmagique-3cab8.firebaseapp.com","messagingSenderId":"588757720945","measurementId":"G-BS4SYP3H2K","projectNumber":"588757720945","version":"2"}
+[info] 
+   Thank you for trying our early preview of Next.js support on Firebase Hosting.
+   During the preview, support is best-effort and breaking changes can be expected. Proceed with caution.
+   The integration is known to work with Next.js version 12 - 15.0. You may encounter errors.
+
+   Documentation: https://firebase.google.com/docs/hosting/frameworks/nextjs
+   File a bug: https://github.com/firebase/firebase-tools/issues/new?template=bug_report.md
+   Submit a feature request: https://github.com/firebase/firebase-tools/issues/new?template=feature_request.md
+
+   We'd love to learn from you. Express your interest in helping us shape the future of Firebase Hosting: https://goo.gle/41enW5X
+
+[debug] [2026-03-02T21:57:18.682Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:18.682Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:18.682Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites/lepetitcoinmagique-3cab8 [none]
+[debug] [2026-03-02T21:57:19.369Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites/lepetitcoinmagique-3cab8 200
+[debug] [2026-03-02T21:57:19.370Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites/lepetitcoinmagique-3cab8 {"name":"projects/lepetitcoinmagique-3cab8/sites/lepetitcoinmagique-3cab8","defaultUrl":"https://lepetitcoinmagique-3cab8.web.app","type":"DEFAULT_SITE"}
+[info] ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/hakim/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/hakim/.gemini/antigravity/scratch/le-petit-coin-magique/package-lock.json
+
+
+[info] ▲ Next.js 16.1.6 (Turbopack)
+
+[info] - Environments: .env.local
+
+
+[info]   Creating an optimized production build ...
+
+[info] 
+[92.95ms] [@tailwindcss/postcss] src/app/globals.css
+[ 0.03ms]   ↳ Quick bail check
+
+[info] [13.39ms]   ↳ Setup compiler
+[ 0.20ms]     ↳ PostCSS AST -> Tailwind CSS AST
+[13.18ms]     ↳ Create compiler
+[ 0.05ms]   ↳ Register full rebuild paths
+[ 2.98ms]   ↳ Setup scanner
+[25.94ms]   ↳ Scan for candidates
+[ 4.43ms]   ↳ Register dependency messages
+[20.20ms]   ↳ Build utilities
+[23.86ms]   ↳ Optimization
+[ 0.44ms]     ↳ AST -> CSS
+[20.10ms]     ↳ Lightning CSS
+[ 3.30ms]     ↳ CSS -> PostCSS AST
+[ 1.88ms]   ↳ Update PostCSS AST
+
+
+[info] ✓ Compiled successfully in 2.8s
+
+[info]   Running TypeScript ...
+
+[info]   Collecting page data using 7 workers ...
+
+[info]   Generating static pages using 7 workers (0/21) ...
+
+[info]   Generating static pages using 7 workers (5/21) 
+
+[info]   Generating static pages using 7 workers (10/21) 
+
+[info]   Generating static pages using 7 workers (15/21) 
+
+[info] ✓ Generating static pages using 7 workers (21/21) in 380.1ms
+
+[info]   Finalizing page optimization ...
+
+[info] 
+
+[info] Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /admin
+├ ○ /admin/customers
+├ ○ /admin/login
+├ ○ /admin/orders
+├ ƒ /admin/orders/[id]
+├ ○ /admin/products
+├ ƒ /admin/products/[id]
+├ ○ /admin/products/new
+├ ○ /admin/settings
+├ ƒ /api/checkout
+├ ƒ /api/debug
+├ ƒ /api/import
+├ ƒ /api/products
+├ ○ /cart
+├ ƒ /category/[slug]
+├ ○ /checkout
+├ ○ /checkout/success
+├ ○ /contact
+├ ○ /curiosites
+├ ○ /notre-equipe-de-createurs
+└ ƒ /product/[id]
+
+
+[info] 
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+[info] Building a Cloud Function to run this application. This is needed due to:
+[info]  • Image Optimization
+[info]  • non-static component /admin/orders/[id]/page
+[info]  • non-static component /admin/products/[id]/page
+[info]  • non-static component /api/checkout/route
+[info]  • non-static component /api/debug/route
+[debug] [2026-03-02T21:57:26.571Z]  • non-static component /api/import/route
+[debug] [2026-03-02T21:57:26.571Z]  • non-static component /api/products/route
+[debug] [2026-03-02T21:57:26.571Z]  • non-static component /category/[slug]/page
+[debug] [2026-03-02T21:57:26.571Z]  • non-static component /product/[id]/page
+[info] 
+[debug] [2026-03-02T21:57:26.657Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:26.657Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:26.657Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites/lepetitcoinmagique-3cab8 [none]
+[debug] [2026-03-02T21:57:27.385Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites/lepetitcoinmagique-3cab8 200
+[debug] [2026-03-02T21:57:27.385Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/lepetitcoinmagique-3cab8/sites/lepetitcoinmagique-3cab8 {"name":"projects/lepetitcoinmagique-3cab8/sites/lepetitcoinmagique-3cab8","defaultUrl":"https://lepetitcoinmagique-3cab8.web.app","type":"DEFAULT_SITE"}
+[debug] [2026-03-02T21:57:30.091Z] [web frameworks] effective firebase.json:  {
+  "hosting": [
+    {
+      "source": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "frameworksBackend": {
+        "region": "europe-west1"
+      },
+      "site": "lepetitcoinmagique-3cab8",
+      "rewrites": [
+        {
+          "source": "/**",
+          "function": {
+            "functionId": "ssrlepetitcoinmagique3c",
+            "region": "europe-west1",
+            "pinTag": true
+          }
+        }
+      ],
+      "redirects": [],
+      "headers": [
+        {
+          "source": "/_global-error",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/_global-error/layout,_N_T_/_global-error/page,_N_T_/_global-error"
+            }
+          ]
+        },
+        {
+          "source": "/_not-found",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/_not-found/layout,_N_T_/_not-found/page,_N_T_/_not-found"
+            }
+          ]
+        },
+        {
+          "source": "/admin/customers",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/admin/layout,_N_T_/admin/customers/layout,_N_T_/admin/customers/page,_N_T_/admin/customers"
+            }
+          ]
+        },
+        {
+          "source": "/admin/login",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/admin/layout,_N_T_/admin/login/layout,_N_T_/admin/login/page,_N_T_/admin/login"
+            }
+          ]
+        },
+        {
+          "source": "/admin/products",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/admin/layout,_N_T_/admin/products/layout,_N_T_/admin/products/page,_N_T_/admin/products"
+            }
+          ]
+        },
+        {
+          "source": "/admin",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/admin/layout,_N_T_/admin/page,_N_T_/admin"
+            }
+          ]
+        },
+        {
+          "source": "/admin/orders",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/admin/layout,_N_T_/admin/orders/layout,_N_T_/admin/orders/page,_N_T_/admin/orders"
+            }
+          ]
+        },
+        {
+          "source": "/admin/products/new",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/admin/layout,_N_T_/admin/products/layout,_N_T_/admin/products/new/layout,_N_T_/admin/products/new/page,_N_T_/admin/products/new"
+            }
+          ]
+        },
+        {
+          "source": "/admin/settings",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/admin/layout,_N_T_/admin/settings/layout,_N_T_/admin/settings/page,_N_T_/admin/settings"
+            }
+          ]
+        },
+        {
+          "source": "/cart",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/cart/layout,_N_T_/cart/page,_N_T_/cart"
+            }
+          ]
+        },
+        {
+          "source": "/checkout/success",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/checkout/layout,_N_T_/checkout/success/layout,_N_T_/checkout/success/page,_N_T_/checkout/success"
+            }
+          ]
+        },
+        {
+          "source": "/contact",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/contact/layout,_N_T_/contact/page,_N_T_/contact"
+            }
+          ]
+        },
+        {
+          "source": "/curiosites",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/curiosites/layout,_N_T_/curiosites/page,_N_T_/curiosites"
+            }
+          ]
+        },
+        {
+          "source": "/checkout",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/checkout/layout,_N_T_/checkout/page,_N_T_/checkout"
+            }
+          ]
+        },
+        {
+          "source": "/notre-equipe-de-createurs",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/notre-equipe-de-createurs/layout,_N_T_/notre-equipe-de-createurs/page,_N_T_/notre-equipe-de-createurs"
+            }
+          ]
+        },
+        {
+          "source": "/favicon.ico",
+          "headers": [
+            {
+              "key": "cache-control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "content-type",
+              "value": "image/x-icon"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/favicon.ico/layout,_N_T_/favicon.ico/route,_N_T_/favicon.ico"
+            }
+          ]
+        },
+        {
+          "source": "/**/*.[jt]s",
+          "headers": [
+            {
+              "key": "Set-Cookie",
+              "value": "__FIREBASE_DEFAULTS__=eyJjb25maWciOnsicHJvamVjdElkIjoibGVwZXRpdGNvaW5tYWdpcXVlLTNjYWI4IiwiYXBwSWQiOiIxOjU4ODc1NzcyMDk0NTp3ZWI6MmNhNjJkZWI0MjJmZGJhYTQ0YTBkMCIsInN0b3JhZ2VCdWNrZXQiOiJsZXBldGl0Y29pbm1hZ2lxdWUtM2NhYjguZmlyZWJhc2VzdG9yYWdlLmFwcCIsImFwaUtleSI6IkFJemFTeUFtUHpYakRCMl9NZ2hnOGZwb09hVG9rUVNleXZRbmJ6OCIsImF1dGhEb21haW4iOiJsZXBldGl0Y29pbm1hZ2lxdWUtM2NhYjguZmlyZWJhc2VhcHAuY29tIiwibWVzc2FnaW5nU2VuZGVySWQiOiI1ODg3NTc3MjA5NDUiLCJtZWFzdXJlbWVudElkIjoiRy1CUzRTWVAzSDJLIiwicHJvamVjdE51bWJlciI6IjU4ODc1NzcyMDk0NSIsInZlcnNpb24iOiIyIn0sIl9hdXRoVG9rZW5TeW5jVVJMIjoiL19fc2Vzc2lvbiJ9; SameSite=Strict; Expires=2028-01-26T08:37:30.091Z; Path=/;"
+            }
+          ]
+        }
+      ],
+      "cleanUrls": true,
+      "trailingSlash": false,
+      "public": ".firebase/lepetitcoinmagique-3cab8/hosting",
+      "webFramework": "next_ssr"
+    }
+  ],
+  "functions": [
+    {
+      "source": ".firebase/lepetitcoinmagique-3cab8/functions",
+      "codebase": "firebase-frameworks-lepetitcoinmagique-3cab8"
+    }
+  ]
+}
+[debug] [2026-03-02T21:57:30.093Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-03-02T21:57:30.093Z] > authorizing via signed-in user (moussaouihaki@gmail.com)
+[debug] [2026-03-02T21:57:30.093Z] [iam] checking project lepetitcoinmagique-3cab8 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2026-03-02T21:57:30.094Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:30.094Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:30.094Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/lepetitcoinmagique-3cab8:testIamPermissions [none]
+[debug] [2026-03-02T21:57:30.094Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/lepetitcoinmagique-3cab8:testIamPermissions  x-goog-user-project=lepetitcoinmagique-3cab8
+[debug] [2026-03-02T21:57:30.094Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/lepetitcoinmagique-3cab8:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2026-03-02T21:57:30.800Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/lepetitcoinmagique-3cab8:testIamPermissions 200
+[debug] [2026-03-02T21:57:30.800Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/lepetitcoinmagique-3cab8:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2026-03-02T21:57:30.801Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:30.801Z] Checked if tokens are valid: true, expires at: 1772491690242
+[debug] [2026-03-02T21:57:30.801Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/lepetitcoinmagique-3cab8/locations/-/functions [none]
+[debug] [2026-03-02T21:57:30.923Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/lepetitcoinmagique-3cab8/locations/-/functions 403
+[debug] [2026-03-02T21:57:30.924Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/lepetitcoinmagique-3cab8/locations/-/functions {"error":{"code":403,"message":"Cloud Functions API has not been used in project lepetitcoinmagique-3cab8 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/cloudfunctions.googleapis.com/overview?project=lepetitcoinmagique-3cab8 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"SERVICE_DISABLED","domain":"googleapis.com","metadata":{"consumer":"projects/lepetitcoinmagique-3cab8","activationUrl":"https://console.developers.google.com/apis/api/cloudfunctions.googleapis.com/overview?project=lepetitcoinmagique-3cab8","service":"cloudfunctions.googleapis.com","serviceTitle":"Cloud Functions API","containerInfo":"lepetitcoinmagique-3cab8"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Cloud Functions API has not been used in project lepetitcoinmagique-3cab8 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/cloudfunctions.googleapis.com/overview?project=lepetitcoinmagique-3cab8 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developers console API activation","url":"https://console.developers.google.com/apis/api/cloudfunctions.googleapis.com/overview?project=lepetitcoinmagique-3cab8"}]}]}}
+[debug] [2026-03-02T21:57:30.924Z] [functions] failed to list functions for lepetitcoinmagique-3cab8
+[debug] [2026-03-02T21:57:30.925Z] [functions] Request to https://cloudfunctions.googleapis.com/v1/projects/lepetitcoinmagique-3cab8/locations/-/functions had HTTP Error: 403, Cloud Functions API has not been used in project lepetitcoinmagique-3cab8 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/cloudfunctions.googleapis.com/overview?project=lepetitcoinmagique-3cab8 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
+[debug] [2026-03-02T21:57:31.053Z] FirebaseError: Request to https://cloudfunctions.googleapis.com/v1/projects/lepetitcoinmagique-3cab8/locations/-/functions had HTTP Error: 403, Cloud Functions API has not been used in project lepetitcoinmagique-3cab8 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/cloudfunctions.googleapis.com/overview?project=lepetitcoinmagique-3cab8 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
+    at responseToError (/Users/hakim/.npm/_npx/7750544ccf494d8b/node_modules/firebase-tools/lib/responseToError.js:53:12)
+    at RetryOperation._fn (/Users/hakim/.npm/_npx/7750544ccf494d8b/node_modules/firebase-tools/lib/apiv2.js:330:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[error] 
+[error] Error: Failed to list functions for lepetitcoinmagique-3cab8

@@ -17,7 +17,7 @@ export default function CartPage() {
                 <ShoppingBag size={64} className="text-gray-200 mb-6" />
                 <h1 className="font-cinzel text-4xl text-[#4a2128] uppercase tracking-widest mb-4">Panier Vide</h1>
                 <p className="font-architects text-gray-500 text-xl mb-10">Votre grimoire n'a pas encore été ensemencé.</p>
-                <Link href="/curiosites">
+                <Link href="/#boutique">
                     <button className="bg-[#4a2128] text-white font-cinzel tracking-widest py-4 px-10 uppercase hover:bg-[#b38b59] transition-colors">
                         Découvrir la Boutique
                     </button>
@@ -103,7 +103,7 @@ export default function CartPage() {
                             ))}
                         </AnimatePresence>
 
-                        <Link href="/curiosites" className="inline-flex items-center gap-2 text-[#b38b59] font-architects text-sm hover:underline mt-4">
+                        <Link href="/#boutique" className="inline-flex items-center gap-2 text-[#b38b59] font-architects text-sm hover:underline mt-4">
                             ← Continuer mes achats
                         </Link>
                     </div>
