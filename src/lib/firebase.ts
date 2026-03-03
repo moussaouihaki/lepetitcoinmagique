@@ -4,13 +4,12 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAmPzXjDB2_Mghg8fpoOaTokQSeyvQnbz8",
-    authDomain: "lepetitcoinmagique-3cab8.firebaseapp.com",
-    projectId: "lepetitcoinmagique-3cab8",
-    storageBucket: "lepetitcoinmagique-3cab8.firebasestorage.app",
-    messagingSenderId: "588757720945",
-    appId: "1:588757720945:web:2ca62deb422fdbaa44a0d0",
-    measurementId: "G-BS4SYP3H2K"
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
