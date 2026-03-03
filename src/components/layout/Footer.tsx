@@ -69,6 +69,15 @@ export default function Footer() {
                     <Link href="/admin" className="text-[10px] uppercase tracking-[0.4em] text-gray-300 hover:text-[#b38b59] transition-colors duration-500 font-cinzel">
                         Grimoire
                     </Link>
+
+                    <a
+                        href="https://syntalys.ch"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[10px] uppercase tracking-[0.4em] text-gray-300 hover:text-[#b38b59] transition-colors duration-500 font-cinzel"
+                    >
+                        by Syntalys
+                    </a>
                 </div>
             </div>
         </footer>
