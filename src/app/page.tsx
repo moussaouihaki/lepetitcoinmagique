@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { getProductsFromFirebase } from '@/lib/products';
 import { Truck, Store, Sparkles } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const allProducts: Product[] = await getProductsFromFirebase();
   const categories = Array.from(new Set(allProducts.map((p) => (p.category || '').toUpperCase()))).filter(Boolean).sort();
