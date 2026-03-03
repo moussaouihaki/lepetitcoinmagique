@@ -60,7 +60,8 @@ export default function AdminOrdersPage() {
 
     const filtered = orders.filter(o => {
         const matchSearch = (o.customerName || '').toLowerCase().includes(search.toLowerCase()) ||
-            (o.customerEmail || '').toLowerCase().includes(search.toLowerCase());
+            (o.customerEmail || '').toLowerCase().includes(search.toLowerCase()) ||
+            (o.id || '').toLowerCase().includes(search.toLowerCase());
         const matchStatus = filterStatus === 'all'
             ? o.status !== 'pending' // On cache les "pending" par défaut dans le "Tous"
             : o.status === filterStatus;
@@ -119,7 +120,7 @@ export default function AdminOrdersPage() {
                     <table className="w-full min-w-[800px]">
                         <thead>
                             <tr className="border-b border-gray-100 bg-gray-50/50">
-                                <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Client</th>
+                                <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Réf / Client</th>
                                 <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Date</th>
                                 <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Statut</th>
                                 <th className="text-left p-5 text-gray-500 font-architects text-xs font-semibold uppercase tracking-wider">Total</th>
@@ -140,6 +141,7 @@ export default function AdminOrdersPage() {
                                 filtered.map((order) => (
                                     <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
                                         <td className="p-5">
+                                            <p className="text-[#b38b59] text-[10px] font-bold mb-1 font-architects">#{order.id.slice(0, 8)}...</p>
                                             <p className="font-architects text-gray-800 text-sm font-medium">{order.customerName || 'Invité'}</p>
                                             <p className="text-gray-400 text-xs mt-0.5">{order.customerEmail}</p>
                                         </td>
