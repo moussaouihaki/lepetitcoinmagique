@@ -43,47 +43,20 @@ export default function CheckoutPage() {
         setLoading(true);
         setStripeError('');
         try {
-            // 1. Save order to Firebase
-            const orderRef = await addDoc(collection(db, 'orders'), {
-                customerName: `${form.firstName} ${form.lastName}`,
-                customerEmail: form.email,
-                customerPhone: form.phone,
-                total: grandTotal,
-                shippingCost: shippingCost,
-                deliveryMethod: deliveryMethod,
-                subtotal: totalPrice,
-                status: 'pending',
-                shippingAddress: deliveryMethod === 'shipping' ? {
-                    address: form.address,
-                    city: form.city,
-                    zip: form.zip,
-                    country: form.country,
-                } : null,
-                notes: form.notes,
-                paymentMethod: 'stripe',
-                items: items.map(i => ({
-                    id: i.id,
-                    name: i.name,
-                    price: i.price,
-                    quantity: i.quantity,
-                    image: i.image,
-                })),
-                createdAt: serverTimestamp(),
-            });
-
-            // 2. Call Stripe API
+            // 1. Call Stripe API First
             const res = await fetch('/api/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     items: items.map(i => ({
+                        id: i.id, // Keep ID for stock management later
                         name: i.name,
                         price: i.price,
                         quantity: i.quantity,
                         image: i.image,
                         description: i.category || 'Création artisanale',
                     })),
-                    orderId: orderRef.id,
+                    // orderId is not yet known, Stripe will use metadata
                     customerEmail: form.email,
                     shippingCost: shippingCost,
                 }),
@@ -92,13 +65,42 @@ export default function CheckoutPage() {
             const data = await res.json();
 
             if (data.error) {
-                // Show Stripe error, don't simulate success
                 setStripeError(`Erreur Stripe : ${data.error}`);
                 setLoading(false);
                 return;
             }
 
             if (data.url) {
+                // 2. Save temporary order for tracking BEFORE redirect (status 'awaiting_payment')
+                // This way it won't show in his main "Active" view if we filter it out
+                await addDoc(collection(db, 'orders'), {
+                    customerName: `${form.firstName} ${form.lastName}`,
+                    customerEmail: form.email,
+                    customerPhone: form.phone,
+                    total: grandTotal,
+                    shippingCost: shippingCost,
+                    deliveryMethod: deliveryMethod,
+                    subtotal: totalPrice,
+                    status: 'awaiting_payment', // Use a status that is NOT 'pending' or 'paid'
+                    shippingAddress: deliveryMethod === 'shipping' ? {
+                        address: form.address,
+                        city: form.city,
+                        zip: form.zip,
+                        country: form.country,
+                    } : null,
+                    notes: form.notes,
+                    paymentMethod: 'stripe',
+                    stripeSessionId: data.sessionId, // We need to return this from API
+                    items: items.map(i => ({
+                        id: i.id,
+                        name: i.name,
+                        price: i.price,
+                        quantity: i.quantity,
+                        image: i.image,
+                    })),
+                    createdAt: serverTimestamp(),
+                });
+
                 clearCart();
                 window.location.href = data.url;
             }

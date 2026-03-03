@@ -53,10 +53,12 @@ export async function POST(req: Request) {
             line_items: lineItems,
             mode: 'payment',
             customer_email: customerEmail || undefined,
-            success_url: `${origin}/checkout/success?orderId=${orderId}&session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/checkout`,
-            metadata: { orderId: orderId || '' },
-            allow_promotion_codes: true, // Permet d'ajouter des codes promo sur la gauche
+            metadata: {
+                customerEmail: customerEmail || '',
+            },
+            allow_promotion_codes: true,
             custom_text: {
                 submit: {
                     message: "Paiement sécurisé crypté SSL"
@@ -64,7 +66,7 @@ export async function POST(req: Request) {
             }
         });
 
-        return NextResponse.json({ url: session.url });
+        return NextResponse.json({ url: session.url, sessionId: session.id });
     } catch (error: any) {
         console.error('Stripe error:', error);
         return NextResponse.json({ error: error.message }, { status: 500 });

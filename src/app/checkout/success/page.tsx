@@ -2,37 +2,39 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { collection, updateDoc, doc, getDoc } from 'firebase/firestore';
+import { collection, updateDoc, doc, getDoc, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Link from 'next/link';
 import { Check, Sparkles } from 'lucide-react';
 
 function SuccessContent() {
     const searchParams = useSearchParams();
-    const router = useRouter();
-    const orderId = searchParams.get('orderId');
+    const [finalOrderId, setFinalOrderId] = useState<string | null>(null);
     const sessionId = searchParams.get('session_id');
 
     useEffect(() => {
         const confirmPayment = async () => {
-            if (!orderId || !sessionId) return;
+            if (!sessionId) return;
 
             try {
-                // 1. Mark order as paid
-                const orderRef = doc(db, 'orders', orderId);
-                const orderSnap = await getDoc(orderRef);
+                // 1. Find the order with this session ID
+                const ordersRef = collection(db, 'orders');
+                const q = query(ordersRef, where('stripeSessionId', '==', sessionId));
+                const querySnap = await getDocs(q);
 
-                if (orderSnap.exists()) {
-                    const orderData = orderSnap.data();
+                if (!querySnap.empty) {
+                    const orderDoc = querySnap.docs[0];
+                    const orderId = orderDoc.id;
+                    const orderData = orderDoc.data();
+                    setFinalOrderId(orderId);
 
-                    // Only update if not already paid (prevents multiple triggers)
+                    // 2. Mark order as paid
                     if (orderData.status !== 'paid') {
-                        await updateDoc(orderRef, {
+                        await updateDoc(doc(db, 'orders', orderId), {
                             status: 'paid',
-                            stripeSessionId: sessionId,
                         });
 
-                        // 2. Manage Stocks: Decrement for each item purchased
+                        // 3. Manage Stocks
                         const items = orderData.items || [];
                         for (const item of items) {
                             if (item.id) {
@@ -47,7 +49,7 @@ function SuccessContent() {
 
                                     await updateDoc(prodRef, {
                                         stock: newStock,
-                                        is_available: newStock > 0 // Disparaît si plus de stock
+                                        is_available: newStock > 0
                                     });
                                 }
                             }
@@ -60,7 +62,7 @@ function SuccessContent() {
         };
 
         confirmPayment();
-    }, [orderId, sessionId]);
+    }, [sessionId]);
 
 
     return (
@@ -83,10 +85,10 @@ function SuccessContent() {
                 <h1 className="font-cinzel text-4xl text-[#4a2128] uppercase tracking-widest mb-4">Commande Confirmée</h1>
                 <p className="font-architects text-xl text-gray-600 mb-6">Merci pour votre confiance ! ✨</p>
 
-                {orderId && (
+                {finalOrderId && (
                     <div className="bg-white border border-gray-100 rounded-2xl p-6 mb-8 shadow-sm">
                         <p className="font-architects text-gray-500 text-sm mb-1">Numéro de commande</p>
-                        <p className="font-architects text-[#b38b59] font-bold text-lg break-all">{orderId}</p>
+                        <p className="font-architects text-[#b38b59] font-bold text-lg break-all">{finalOrderId}</p>
                     </div>
                 )}
 
