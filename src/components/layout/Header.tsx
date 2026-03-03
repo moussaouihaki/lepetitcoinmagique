@@ -172,22 +172,34 @@ export default function Header() {
                                                 className="overflow-hidden w-full"
                                             >
                                                 <div className="flex flex-col gap-5 pt-5 items-center">
-                                                    {categories.map((cat, i) => (
-                                                        <motion.div
-                                                            key={cat}
-                                                            initial={{ opacity: 0, x: -10 }}
-                                                            animate={{ opacity: 1, x: 0 }}
-                                                            transition={{ delay: i * 0.04 }}
-                                                        >
-                                                            <Link
-                                                                href={`/curiosites#${cat.toLowerCase()}`}
-                                                                onClick={() => { setMobileMenuOpen(false); setMobileBoutiqueOpen(false); }}
-                                                                className="font-cinzel text-lg tracking-widest uppercase text-gray-600 hover:text-[#4a2128] transition-colors"
+                                                    <Link
+                                                        href="/curiosites"
+                                                        onClick={() => { setMobileMenuOpen(false); setMobileBoutiqueOpen(false); }}
+                                                        className="font-cinzel text-lg tracking-[0.2em] font-bold uppercase text-[#b38b59] hover:text-[#4a2128] transition-colors"
+                                                    >
+                                                        Voir tout le grimoire
+                                                    </Link>
+                                                    <div className="h-[1px] w-8 bg-[#b38b59]/20" />
+                                                    {categories.length === 0 ? (
+                                                        <span className="font-architects text-gray-400 text-sm italic">Chargement des sorts...</span>
+                                                    ) : (
+                                                        categories.map((cat, i) => (
+                                                            <motion.div
+                                                                key={cat}
+                                                                initial={{ opacity: 0, x: -10 }}
+                                                                animate={{ opacity: 1, x: 0 }}
+                                                                transition={{ delay: i * 0.04 }}
                                                             >
-                                                                {cat}
-                                                            </Link>
-                                                        </motion.div>
-                                                    ))}
+                                                                <Link
+                                                                    href={`/curiosites#${cat.toLowerCase()}`}
+                                                                    onClick={() => { setMobileMenuOpen(false); setMobileBoutiqueOpen(false); }}
+                                                                    className="font-cinzel text-lg tracking-widest uppercase text-gray-600 hover:text-[#4a2128] transition-colors"
+                                                                >
+                                                                    {cat}
+                                                                </Link>
+                                                            </motion.div>
+                                                        ))
+                                                    )}
                                                 </div>
                                             </motion.div>
                                         )}
