@@ -58,13 +58,13 @@ export default function Footer() {
 
                 {/* Bottom Bar */}
                 <div className="mt-24 pt-8 border-t border-[#b38b59]/10 flex flex-col items-center gap-6">
-                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.4em] text-gray-400 font-cinzel">
-                        <span>© {year} Le Petit Coin Magique by</span>
+                    <div className="flex flex-wrap justify-center items-center gap-x-2 gap-y-1 text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.3em] md:tracking-[0.4em] text-gray-400 font-cinzel text-center px-4">
+                        <span className="whitespace-nowrap">© {year} Le Petit Coin Magique by</span>
                         <a
                             href="https://syntalys.ch"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-500 hover:text-blue-700 transition-colors duration-500 font-bold"
+                            className="text-blue-500 hover:text-blue-700 transition-colors duration-500 font-bold whitespace-nowrap"
                         >
                             Syntalys
                         </a>
