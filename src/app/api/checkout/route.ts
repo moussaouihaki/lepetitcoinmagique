@@ -58,9 +58,6 @@ export async function POST(req: Request) {
             metadata: { orderId: orderId || '' },
             allow_promotion_codes: true, // Permet d'ajouter des codes promo sur la gauche
             custom_text: {
-                shipping_address: {
-                    message: "Votre commande sera préparée avec soin dans notre atelier du Jura."
-                },
                 submit: {
                     message: "Paiement sécurisé crypté SSL"
                 }
