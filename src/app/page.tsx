@@ -77,14 +77,40 @@ export default async function Home() {
             ))}
           </div>
 
-          <a href="#boutique" className="mt-16 group inline-flex items-center gap-4 px-12 py-5 bg-[#4a2128] text-white rounded-full transition-all hover:bg-[#b38b59] hover:translate-y-[-2px] shadow-xl shadow-[#4a2128]/10">
-            <span className="font-cinzel tracking-widest uppercase text-sm font-bold">Explorer le Grimoire</span>
+          <a href="#categories" className="mt-16 group inline-flex items-center gap-4 px-12 py-5 bg-[#4a2128] text-white rounded-full transition-all hover:bg-[#b38b59] hover:translate-y-[-2px] shadow-xl shadow-[#4a2128]/10">
+            <span className="font-cinzel tracking-widest uppercase text-sm font-bold">Explorer la Boutique</span>
             <div className="w-1 h-1 bg-white rotate-45 group-hover:rotate-180 transition-transform duration-500" />
           </a>
         </div>
 
         {/* Ethereal background aura */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[1000px] h-[500px] bg-[#b38b59]/5 blur-[120px] rounded-full -z-10" />
+      </section>
+
+      {/* Categories Selection Section */}
+      <section id="categories" className="py-24 bg-[#fdfaf6] border-b border-[#b38b59]/10">
+        <div className="container mx-auto px-6 max-w-[1200px]">
+          <div className="text-center mb-16">
+            <span className="font-architects text-[#b38b59] text-xl mb-3 block italic">Parcourez nos collections</span>
+            <h2 className="font-cinzel text-3xl md:text-5xl text-[#2c2522] uppercase tracking-widest">Nos Catégories</h2>
+            <div className="w-12 h-[1px] bg-[#b38b59] mx-auto mt-6" />
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
+            {categories.map((cat) => (
+              <Link
+                key={cat}
+                href={`/curiosites#${cat.toLowerCase()}`}
+                className="group relative px-8 py-4 bg-white border border-[#b38b59]/20 hover:border-[#b38b59] transition-all duration-500 hover:shadow-lg overflow-hidden"
+              >
+                <span className="relative z-10 font-cinzel text-lg tracking-[0.2em] text-gray-700 group-hover:text-[#4a2128] uppercase transition-all">
+                  {cat}
+                </span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#4a2128] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Exquisite Pillars Section */}
