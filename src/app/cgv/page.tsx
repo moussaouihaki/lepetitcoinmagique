@@ -48,7 +48,7 @@ export default function CGVPage() {
                             4. Livraison
                         </h2>
                         <p>
-                            Les livraisons sont effectuées principalement en <strong>Suisse</strong>. Les délais d'expédition sont généralement de 3 à 5 jours ouvrés. Les frais de port sont calculés lors du passage à la caisse et incluent l'emballage sécurisé des objets souvent fragiles.
+                            Les livraisons sont effectuées principalement en <strong>Suisse</strong>. Les délais d'expédition sont généralement de 1 à 2 jours ouvrés. Les frais de port sont calculés lors du passage à la caisse et incluent l'emballage sécurisé des objets souvent fragiles.
                         </p>
                     </section>
 

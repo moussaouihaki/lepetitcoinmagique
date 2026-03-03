@@ -40,7 +40,7 @@ export async function POST(req: Request) {
                     currency: 'chf',
                     product_data: {
                         name: 'Frais de port',
-                        description: 'Livraison sécurisée sous 5 jours ouvrés'
+                        description: 'Livraison sécurisée sous 2 jours ouvrés'
                     },
                     unit_amount: Math.round(shippingCost * 100),
                 },
