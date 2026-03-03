@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Facebook, Instagram, Music2 } from 'lucide-react';
+import { Facebook, Instagram, Music2, Lock } from 'lucide-react';
 
 export default function Footer() {
     const [year, setYear] = useState(new Date().getFullYear());
@@ -66,18 +66,18 @@ export default function Footer() {
                         <div className="w-1.5 h-1.5 bg-[#b38b59] rotate-45" />
                     </div>
 
-                    <Link href="/admin" className="text-[10px] uppercase tracking-[0.4em] text-gray-300 hover:text-[#b38b59] transition-colors duration-500 font-cinzel">
-                        Grimoire
-                    </Link>
-
                     <a
                         href="https://syntalys.ch"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[10px] uppercase tracking-[0.4em] text-gray-300 hover:text-[#b38b59] transition-colors duration-500 font-cinzel"
+                        className="text-[10px] uppercase tracking-[0.4em] text-blue-500 hover:text-blue-700 transition-colors duration-500 font-cinzel font-bold"
                     >
                         by Syntalys
                     </a>
+
+                    <Link href="/admin" className="text-gray-300 hover:text-[#b38b59] transition-colors duration-500" title="Accès Grimoire">
+                        <Lock size={16} strokeWidth={1.5} />
+                    </Link>
                 </div>
             </div>
         </footer>
